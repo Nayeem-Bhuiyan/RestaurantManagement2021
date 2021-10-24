@@ -1,0 +1,294 @@
+﻿@model FoodItemViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Style{
+
+    <link href="~/assets/bundles/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+}
+<!-- Main Content Begin-->
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+            <form asp-area="FoodItemArea" asp-controller="FoodItem" asp-action="Index" enctype="multipart/form-data" id="frmData">
+                <div class="card text-center" style="background-color:green!important;color:white!important">
+                    <h4>Add New Food Item</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <input type="hidden" id="FoodItemId" name="FoodItemId" value="0" />
+                            <div class="form-group">
+                                <label>Food Item</label>
+                                <input type="text" id="itemName" name="itemName" class="form-control" required="">
+                            </div>
+                            <div class="form-group">
+                                <label>Food Image</label>
+                                <input type="file" id="IFormFoodImage" name="IFormFoodImage" class="form-control" required="">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Food Category</label>
+                                <select class="form-control" id="FoodCategoryId" name="FoodCategoryId" required="">
+                                    <option value="" selected>Select Category</option>
+                                    @foreach (var item in Model.foodCategories)
+                                    {
+                                        <option value="@item.Id">@item.foodCategoryName</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Unit</label>
+                                <select class="form-control" id="UnitId" name="UnitId" required="">
+                                    <option value="" selected>Select Unit</option>
+                                    @foreach (var item in Model.units)
+                                    {
+                                        <option value="@item.Id">@item?.description</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label>Food Description</label>
+                                <input type="text" id="description" name="description" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Unit Price</label>
+                                <input type="text" id="unitPrice" name="unitPrice" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Vat Percent</label>
+                                <input type="text" id="vatPercent" name="vatPercent" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-sm-left text-md-left text-lg-left text-xl-left">
+                    <button type="submit" class="btn btn-primary" id="btnSave">Submit</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Food Item Information</h4>
+            </div>
+            <div class="card-body">
+
+                <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="tblData">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Sl#</th>
+                            <th>Item</th>
+                            <th>Image</th>
+                            <th>Category</th>
+                            <th>Unit</th>
+                            <th>Unit Price</th>
+                            <th>Vat</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+
+                            @if (Model.foodItems != null)
+                            {
+                                int Sl = 1;
+                                @foreach (var data in Model.foodItems.OrderByDescending(x => x.Id))
+                                {
+                                    <tr class="text-center">
+                                        <td>
+                                            @Sl
+                                        </td>
+                                        <td>@data?.itemName</td>
+                                        <td><img src="/@data?.foodImage" alt="Alternate Text" width="50" height="50" /></td>
+                                        <td>@data?.FoodCategory?.foodCategoryName</td>
+                                        <td>@data?.Unit?.unitName</td>
+                                        <td>@data?.unitPrice</td>
+                                        <td>@data?.vatPercent</td>
+                                        <td>@data?.description</td>
+                                        <td class="text-nowrap">
+                                            <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,'@data.itemName',@data?.FoodCategoryId,@data?.UnitId,@data?.unitPrice,@data?.vatPercent,'@data?.description')">Edit</a>
+                                            <a href="#" class="badge badge-danger badge-shadow" onclick="Delete(@data.Id)">Delete</a>
+                                        </td>
+                                    </tr>
+                                    Sl = Sl + 1;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                </tr>
+                            }
+
+                        }
+
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content End-->
+@section Scripts{
+    <script src="~/assets/bundles/select2/dist/js/select2.full.min.js"></script>
+    <script>
+        $(document).ready(function () {
+             $("#tblData").DataTable();
+            $('#UnitId').select2();
+            $('#FoodCategoryId').select2();
+            CleanData();
+        });
+
+
+        function Edit(Id, itemName, FoodCategoryId, UnitId, unitPrice, vatPercent, description) {
+            CleanData();
+            $("#FoodItemId").val(Id);
+            $("#itemName").val(itemName);
+            $("#unitPrice").val(unitPrice);
+            $("#vatPercent").val(vatPercent);
+            $("#description").val(description);
+            $("#FoodCategoryId").val(FoodCategoryId).trigger('change');
+            $("#UnitId").val(UnitId).trigger('change');
+
+        }
+
+        function CleanData() {
+            $("#FoodItemId").val(0);
+            $("#itemName").val("");
+            $("#unitPrice").val("");
+            $("#vatPercent").val("");
+            $("#description").val("");
+            $("#FoodCategoryId").val(0).trigger('change')
+            $("#UnitId").val(0).trigger('change')
+        }
+
+        $('#btnSave').click(function () {
+
+            $('#frmData').on('submit', function (event) {
+
+                event.preventDefault();
+
+                var form = $("#frmData")[0];
+                var frmdata = new FormData(form);
+                frmdata.append("IFormFoodImage", $('#IFormFoodImage')[0].files[0]);
+                frmdata.append("FoodItemId", $('#FoodItemId').val());
+                frmdata.append("itemName", $('#itemName').val());
+                frmdata.append("unitPrice", $('#unitPrice').val());
+                frmdata.append("vatPercent", $('#vatPercent').val());
+                frmdata.append("description", $('#description').val());
+                frmdata.append("FoodCategoryId", $('#FoodCategoryId').val());
+                frmdata.append("UnitId", $('#UnitId').val());
+                console.log(frmdata);
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to save this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/FoodItemArea/FoodItem/Index",
+                            type: "POST",
+                            dataType: "json",
+                            data: frmdata,
+                            enctype: "multipart/form-data",
+                            processData: false,
+                            contentType: false,
+                            cache: false,
+                            timeout: 600000,
+                            beforeSend: function () {
+                                $('#btnSave').attr('disabled', 'disabled');
+                                $('#btnSave').val('Submitting...');
+
+                            },
+                        }).done(function (data) {
+
+                            $("#btnSave").removeAttr('disabled');
+
+                            if (parseInt($("#FoodItemId").val().trim()) > 0) {
+                                swal.fire('success', 'Updated Successfully!', 'success').then(function () {
+                                    CleanData();
+                                    location.reload();
+                                });
+                            }
+                            else {
+                                swal.fire('success', 'Saved Successfully!', 'success').then(function () {
+                                    CleanData();
+                                    location.reload();
+                                });
+                            }
+
+
+                        }).fail(function () {
+                            $("#btnSave").removeAttr('disabled');
+                            swal.fire('warning', 'Failed!', 'warning');
+                        })
+                    }
+
+                });
+
+            })
+
+        })
+
+
+
+
+        function Delete(Id) {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to Delete this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/FoodItemArea/FoodItem/Delete/" + Id,
+                        data: { Id: Id },
+                        type: 'POST',
+                    })
+                        .done(function () {
+                            swal.fire('Delete', 'Delete Successfully!', 'success').then(function () {
+                                window.location.reload();
+                            });
+                        })
+                        .fail(function () {
+                            swal.fire('Cancelled', 'It will not be deleted. Please try again later !!!', 'error');
+                        });
+                }
+
+            });
+        }
+    </script>
+}
+
+
+
+
+

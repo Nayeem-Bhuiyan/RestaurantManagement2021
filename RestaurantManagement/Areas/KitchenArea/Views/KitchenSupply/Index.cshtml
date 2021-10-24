@@ -1,0 +1,470 @@
+﻿@model KitchenSupplyViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Style{
+    <style>
+        .modal {
+            position: absolute;
+            top: -170px;
+            right: 0px;
+            bottom: 0;
+            left: 0;
+            z-index: 10040;
+            overflow: auto;
+            overflow-y: auto;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Kitchen Stock Supply</h4>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="KitchenOrder-tab" data-toggle="tab" href="#KitchenOrder" role="tab"
+                           aria-controls="KitchenOrder" aria-selected="true">KitchenOrder</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="KitchenSupplyList-tab" data-toggle="tab" href="#KitchenSupplyList" role="tab"
+                           aria-controls="KitchenSupplyList" aria-selected="false">KitchenSupplyList</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="KitchenOrder" role="tabpanel" aria-labelledby="KitchenOrder-tab">
+                        <div class="row">
+                            <div class="col-md-12 text-center text-white">
+                                <a class="badge badge-primary badge-shadow text-white" onclick="ShowModal()">Selected List</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                    <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="tblData">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>Sl#</th>
+                                                <th>Action</th>
+                                                <th>Item</th>
+                                                <th>Description</th>
+                                                <th>Category</th>
+                                                <th>Purchase</th>
+                                                <th>kitchen</th>
+                                                <th>Stock</th>
+                                                <th>Unit</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+
+                                                @if (Model.kitchenDetailsViewModels != null)
+                                                {
+                                                    int Sl = 1;
+                                                    @foreach (var data in Model.kitchenDetailsViewModels.OrderByDescending(x => x.categoryName))
+                                                    {
+                                                        <tr class="text-center">
+                                                            <td>
+                                                                @Sl
+                                                            </td>
+                                                            <td class="text-nowrap">
+                                                                <a href="#" class="badge badge-primary badge-shadow btnSelect" onclick="SelectedItem(@data?.ItemId,'@data?.itemName','@data?.itemCode','@data?.itemDescription','@data?.categoryName',@data?.purchaseTotalAmount,@data?.kitchenTotalSupplyAmount,@data?.stockAmount,'@data?.unitName','@data?.unitDescription')">Select</a>
+                                                                <a href="#" class="badge badge-warning badge-shadow btnCancel">Cancel</a>
+                                                            </td>
+                                                            <td>
+                                                                @data?.itemName <span class="d-none">@data?.ItemId</span><span class="d-none itemCode">@data?.itemCode</span>
+                                                            </td>
+                                                            <td>
+                                                                @data?.itemDescription
+                                                            </td>
+                                                            <td>
+                                                                @data?.categoryName
+                                                            </td>
+                                                            <td>
+                                                                @data?.purchaseTotalAmount
+                                                            </td>
+                                                            <td>
+                                                                @data?.kitchenTotalSupplyAmount
+                                                            </td>
+                                                            <td>
+                                                                @data?.stockAmount
+                                                            </td>
+                                                            <td>
+                                                                @data?.unitName
+                                                            </td>
+                                                            <td>
+                                                                @data?.unitDescription
+                                                            </td>
+                                                        </tr>
+                                                        Sl = Sl + 1;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="KitchenSupplyList" role="tabpanel" aria-labelledby="KitchenSupplyList-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="tblKitchenSupplyList">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>
+                                               Sl#
+                                            </th>
+                                            <th class="text-nowrap">
+                                              Action
+                                            </th>
+                                            <th>
+                                               OrderCode
+                                            </th>
+                                            <th>
+                                                Item
+                                            </th>
+                                            <th>
+                                              itemCode
+                                            </th>
+                                            <th>
+                                               Category
+                                            </th>
+                                            <th>
+                                               Unit
+                                            </th>
+                                            <th>
+                                                Quantity
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+
+                                            @if (Model.kitchenSupplys != null)
+                                            {
+                                                int Sl = 1;
+                                                @foreach (var data in Model.kitchenSupplys.OrderByDescending(x => x.Id))
+                                                {
+                                        <tr class="text-center">
+                                            <td>
+                                                @Sl
+                                            </td>
+                                            <td class="text-nowrap">
+                                                <a href="#" class="badge badge-primary badge-shadow btnSelect" onclick="EditKitchenSupply(@data?.Id,@data?.ItemId,'@data?.Item?.itemCode','@data?.Item?.itemName','@data?.Item?.Category?.categoryName','@data?.Item?.Unit?.unitName',@data?.netQuantity,'@data?.OrderCode')">Edit</a>
+                                                <a href="#" class="badge badge-warning badge-shadow btnCancel" onclick="ReturnSupply(@data?.Id,@data.netQuantity)">Return</a>
+                                            </td>
+                                            <td>
+                                                @data?.OrderCode?.Substring(0,8)
+                                            </td>
+                                            <td>
+                                                @data?.Item?.itemName
+                                            </td>
+                                            <td>
+                                                @data?.Item?.itemCode
+                                            </td>
+                                            <td>
+                                                @data?.Item?.Category?.categoryName
+                                            </td>
+                                            <td>
+                                                @data?.Item?.Unit?.unitName
+                                            </td>
+                                            <td>
+                                                @data?.netQuantity
+                                            </td>
+                                        </tr>
+                                                    Sl = Sl + 1;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                </tr>
+                                            }
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="SelectedItemModalLabel"
+     aria-hidden="true" id="KitchenSelectedItemModal" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<h5 class="modal-title" id="SelectedItemModalLabel">Selected Daily Food Item</h5>*@
+                <button type="button" class="btn btn-primary float-right btnSaveKitchenItems" onclick="SaveAllItem()">
+                    Save All
+                </button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style=" height: 300px !important; max-height: 300px !important;">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="tblSelectedKitchenItem">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Action</th>
+                                    <th>Item</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Purchase</th>
+                                    <th>kitchen</th>
+                                    <th>Stock</th>
+                                    <th>Unit</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="EditKitchenSupplyModalLabel"
+     aria-hidden="true" id="EditKitchenSupplyModal" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="EditKitchenSupplyModalLabel">Edit Kitchen Supply</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style=" height: 300px !important; max-height: 300px !important;">
+                <div class="row">
+                    <div class="col-12">
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="ReturnKitchenSupplyModalLabel"
+     aria-hidden="true" id="ReturnKitchenSupplyModal" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="ReturnKitchenSupplyModalLabel">Return Kitchen Supply</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-area="KitchenArea" asp-controller="KitchenSupply" asp-action="Index" id="frmEditKitchen">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="hidden" id="KitchenSupplyId" name="KitchenSupplyId" value="0" />
+                                        <input type="hidden" id="ItemId" name="ItemId" value="0" />
+                                        <input type="hidden" id="OrderCode" name="OrderCode" value="0" />
+                                        <div class="form-group">
+                                            <label>Supply Quantity</label>
+                                            <input type="text" id="quantity" name="quantity" class="form-control" value="" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Return Quantity</label>
+                                            <input type="text" id="returnQuantity" name="returnQuantity" class="form-control" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary" id="btnEditSupply">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("#tblData").DataTable();
+            $("#tblKitchenSupplyList").DataTable();
+
+
+            $("#tblData").on("click", "a.btnSelect", function () {
+                $(this).closest("tr").addClass("bg-warning");
+            })
+
+            $("#tblSelectedKitchenItem").on("click", "a.btnRemove", function () {
+                var text = $(this).closest("tr").find("td").eq(1).find("span.itemCode").text().trim();
+
+                $("#tblData tbody tr").each(function (index) {
+                    var text2 = $(this).find("td").eq(2).find("span.itemCode").text().trim();
+                    if (text == text2) {
+                        $(this).closest("tr").removeClass("bg-warning");
+                    }
+                })
+
+                $(this).closest("tr").remove();
+
+            })
+
+
+            $("#tblData").on("click", "a.btnCancel", function () {
+                var text2 = $(this).closest("tr").find("td").eq(2).find("span.itemCode").text().trim();
+                $("#tblSelectedKitchenItem tbody tr").each(function (index) {
+                    var text = $(this).find("td").eq(1).find("span.itemCode").text().trim();
+                    if (text2 == text) {
+                        $(this).closest("tr").remove();
+                    }
+                })
+
+                $(this).closest("tr").removeClass("bg-warning");
+            })
+
+
+        });
+
+        function ShowModal() {
+            $("#KitchenSelectedItemModal").modal("show");
+        }
+
+        function SelectedItem(ItemId, itemName, itemCode, itemDescription, categoryName, purchaseTotalAmount, kitchenTotalSupplyAmount, stockAmount, unitName, unitDescription) {
+
+            if ($('#tblSelectedKitchenItem tr:contains("' + itemName + '")').length > 0) {
+                /* alert("Sorry!! you already add this item");*/
+                swal.fire('warning', 'Sorry!! you already add this item', 'warning');
+            } else {
+                $("#tblSelectedKitchenItem tbody").append(
+                    `<tr class="text-center">
+                            <td> <a href="#" class="badge badge-danger badge-shadow btnRemove">Remove</a></td>
+                            <td>${itemName}<span class="d-none SelectedItemId">${ItemId}</span> <span class="d-none itemCode">${itemCode}</span></td>
+                            <td>${itemDescription}</td>
+                            <td>${categoryName}</td>
+                            <td>${purchaseTotalAmount}</td>
+                            <td><input type="text" name="quantity" class="form-control inputquantity" value="0" /></td>
+                            <td>${stockAmount}</td>
+                            <td>${unitName}</td>
+                            <td>${unitDescription}</td>
+                        </tr>`
+                )
+            }
+        }
+
+        function EditKitchenSupply(Id,ItemId,itemCode,itemName,categoryName,unitName,netQuantity,OrderCode) {
+
+
+            $("#EditKitchenSupplyModal").modal("show");
+           
+        }
+
+        function ReturnSupply(Id, netQuantity) {
+
+            $("#ReturnKitchenSupplyModal").modal("show");
+        }
+
+        $("#tblSelectedKitchenItem").on("keyup", "input.inputquantity", function () {
+            var InputQuantity = parseFloat($(this).val().trim());
+            var stockQuantity = parseFloat($(this).closest("tr").find("td:eq(6)").text().trim());
+            if (InputQuantity > stockQuantity) {
+                swal.fire('warning', 'Sorry!! you cross the stock limit ' + stockQuantity, 'warning');
+                $(this).val(0);
+            }
+
+        })
+
+
+        function SaveAllItem() {
+            if ($("#tblSelectedKitchenItem tbody tr").length > 0) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to save this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let uniqueOrderCode = Date.now().toString(36) + Math.random().toString(36).substring(2);
+                        $("#tblSelectedKitchenItem tbody tr").each(function (index) {
+                            var CurrentRow = $(this);
+                            var frmData = {
+                                Id: 0,
+                                ItemId: $(this).find("td").eq(1).find("span.SelectedItemId").text().trim(),
+                                OrderCode: uniqueOrderCode,
+                                quantity: $(this).find("td").eq(5).find("input.inputquantity").val().trim(),
+                                returnQuantity: 0,
+                            }
+                            console.log(frmData);
+                            $.ajax({
+                                url: "/KitchenArea/KitchenSupply/Index",
+                                type: "POST",
+                                data: JSON.stringify(frmData),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                beforeSend: function () {
+                                    $('#btnSaveKitchenItems').attr('disabled', 'disabled');
+                                    $('#btnSaveKitchenItems').val('Submitting...');
+                                },
+                            }).done(function (data) {
+                                CurrentRow.remove();
+                                $("#btnSaveKitchenItems").removeAttr('disabled');
+                                if ($("#tblSelectedKitchenItem tbody tr").length == 0) {
+
+                                    $("#tblData tbody tr").each(function (index) {
+                                        $(this).removeClass("bg-warning");
+                                    })
+
+                                    swal.fire('success', 'Saved All Successfully!', 'success');
+                                }
+
+                            }).fail(function () {
+                                $("#btnSaveKitchenItems").removeAttr('disabled');
+                                swal.fire('warning', 'Failed!', 'warning');
+                            })
+
+                        })
+
+                    }
+
+                });
+            }
+            else {
+                $("#btnSaveKitchenItems").removeAttr('disabled');
+                swal.fire('warning', 'Please select at least one Item', 'warning');
+            }
+
+        }
+    </script>
+}
+
+

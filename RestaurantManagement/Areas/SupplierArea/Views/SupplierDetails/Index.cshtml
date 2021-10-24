@@ -1,0 +1,284 @@
+﻿@model SupplierDetailsViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Style{
+    <link href="~/lib/jquery-ui/css/jquery-ui.min.css" rel="stylesheet" />
+    <style>
+    </style>
+}
+<!-- Main Content Begin-->
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+            <form asp-area="SupplierArea" asp-controller="SupplierDetails" asp-action="Index" id="frmData">
+                <div class="card text-center" style="background-color:green!important;color:white!important">
+                    <h4>Add Supplier Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <input type="hidden" id="SupplierDetailsId" name="SupplierDetailsId" value="0" />
+                            <div class="form-group">
+                                <label>Supplier Name</label>
+                                <input type="text" id="supplierName" name="supplierName" class="form-control" required>
+                                <input type="hidden" id="SupplierId" name="SupplierId" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Present Address</label>
+                                <input type="text" id="presentAddress" name="presentAddress" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Permanent Address</label>
+                                <input type="text" id="permanentAddress" name="permanentAddress" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label>Shop No</label>
+                                <input type="text" id="shopNo" name="shopNo" class="form-control" required="">
+                            </div>
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" id="shopLocation" name="shopLocation" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Licence No</label>
+                                <input type="text" id="licenceNo" name="licenceNo" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-sm-left text-md-left text-lg-left text-xl-left">
+                    <button type="submit" class="btn btn-primary" id="btnSave">Submit</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Supplier Details</h4>
+            </div>
+            <div class="card-body">
+
+                <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="tblData">
+                    <thead>
+                        <tr class="text-center">
+                            <th>#</th>
+                            <th>Supplier</th>
+                            <th>Contact</th>
+                            <th>Present Address</th>
+                            <th>Permanent Address</th>
+                            <th>Licence</th>
+                            <th>Shop No</th>
+                            <th>Location</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+
+                            @if (Model.supplierListDetails != null)
+                            {
+                                int Sl = 1;
+                                @foreach (var data in Model.supplierListDetails.OrderByDescending(x => x.Id))
+                                {
+                                    <tr class="text-center">
+                                        <td>
+                                            @Sl
+                                        </td>
+                                        <td>@data?.Supplier?.supplierName</td>
+                                        <td>@data?.Supplier?.contactNo</td>
+                                        <td>@data?.presentAddress</td>
+                                        <td>@data?.permanentAddress</td>
+                                        <td>@data?.licenceNo</td>
+                                        <td>@data?.shopNo</td>
+                                        <td>@data?.shopLocation</td>
+                                        <td class="text-nowrap">
+                                            <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,@data?.Supplier?.Id,'@data?.Supplier?.supplierName','@data?.Supplier?.contactNo','@data?.presentAddress','@data?.permanentAddress','@data?.licenceNo','@data?.shopNo','@data?.shopLocation')">Edit</a>
+                                            <a href="#" class="badge badge-danger badge-shadow" onclick="Delete(@data.Id)">Delete</a>
+                                        </td>
+                                    </tr>
+                                    Sl = Sl + 1;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                </tr>
+                            }
+
+                        }
+
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content End-->
+@section Scripts{
+    <script src="~/lib/jquery-ui/js/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#tblData").DataTable();
+            CleanData();
+
+            $("#supplierName").change(function () {
+                if (parseInt($("#SupplierId").val().trim())<=0 || $("#SupplierId").val().trim() == null || $("#SupplierId").val().trim() == "") {
+                    swal.fire('warning', 'Please type a valid supplier name!!', 'warning');
+                    $("#supplierName").val("");
+                    $("#SupplierId").val(0);
+                }
+            })
+
+            Common.Ajax('GET', '/SupplierArea/Supplier/AllSuppliers', [], 'json', ajaxGetAllSuppliers);
+        });
+
+        function ajaxGetAllSuppliers(response) {
+            $("#SupplierId").val("");
+            var SupplierData= [];
+            $.each(response, function (id, option) {
+                var obj = new Object();
+                obj.key = option.Id;
+                obj.value = option.supplierName + " (" + option.contactNo + ")";
+                SupplierData.push(obj);
+            });
+            $('#supplierName').autocomplete({
+                source: SupplierData,
+                select: function (event, ui) {
+                    $("#SupplierId").val(ui.item.key);
+                    $("#supplierName").val(ui.item.value);
+                }
+            });
+        }
+
+
+        function CleanData() {
+            $("#SupplierDetailsId").val(0);
+            $("#supplierName").val("");
+            $("#shopNo").val("");
+            $("#shopLocation").val("");
+            $("#licenceNo").val("");
+            $("#presentAddress").val("");
+            $("#permanentAddress").val("");
+            $("#SupplierId").val(0);
+        }
+
+        $('#btnSave').click(function () {
+
+            $('#frmData').on('submit', function (event) {
+
+                event.preventDefault();
+                var frmdata = $('#frmData').serialize();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to save this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/SupplierArea/SupplierDetails/Index",
+                            type: "POST",
+                            data: frmdata,
+                            dataType: "json",
+                            beforeSend: function () {
+                                $('#btnSave').attr('disabled', 'disabled');
+                                $('#btnSave').val('Submitting...');
+
+                            },
+                        }).done(function (data) {
+
+                            $("#btnSave").removeAttr('disabled');
+                            if ($("#SupplierDetailsId").val() > 0) {
+                                swal.fire('success', 'Updated Successfully!', 'success').then(function () {
+                                    CleanData();
+                                    location.reload();
+                                });
+                            }
+                            else {
+                                swal.fire('success', 'Save Successfully!', 'success').then(function () {
+                                    CleanData();
+                                    location.reload();
+                                });
+                            }
+
+
+                        }).fail(function () {
+                            $("#btnSave").removeAttr('disabled');
+                            swal.fire('warning', 'Failed!', 'warning');
+                        })
+                    }
+
+                });
+
+            })
+
+        })
+
+
+        function Edit(Id, SupplierId, supplierName, contactNo, presentAddress, permanentAddress, licenceNo, shopNo, shopLocation) {
+            CleanData();
+            $("#SupplierDetailsId").val(Id);
+            $("#SupplierId").val(SupplierId);
+            $("#supplierName").val(supplierName + " " + "(" + contactNo + ")");
+            $("#presentAddress").val(presentAddress);
+            $("#permanentAddress").val(permanentAddress);
+            $("#licenceNo").val(licenceNo);
+            $("#shopNo").val(shopNo);
+            $("#shopLocation").val(shopLocation);
+        }
+
+        function Delete(Id) {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to Delete this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/SupplierArea/SupplierDetails/Delete/" + Id,
+                        data: { Id: Id },
+                        type: 'POST',
+                    })
+                        .done(function () {
+
+                            swal.fire('Delete', 'Delete Successfully!', 'success').then(function () {
+                                window.location.reload();
+                            });
+                        })
+                        .fail(function () {
+                            swal.fire('Cancelled', 'It will not be deleted. Please try again later !!!', 'error');
+                        });
+                }
+
+            });
+        }
+    </script>
+}
+
+
+
+
+

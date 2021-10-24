@@ -1,0 +1,211 @@
+﻿@model DesignationViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Style{
+
+}
+<!-- Main Content Begin-->
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+            <form asp-area="MasterDataArea" asp-controller="Designation" asp-action="Index" id="frmData">
+                <div class="card text-center" style="background-color:green!important;color:white!important">
+                    <h4>Add New Designation</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <input type="hidden" id="DesignationId" name="DesignationId" value="0" />
+                            <div class="form-group">
+                                <label>Designation</label>
+                                <input type="text" id="name" name="name" class="form-control" required="">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-sm-left text-md-left text-lg-left text-xl-left">
+                    <button type="submit" class="btn btn-primary" id="btnSave">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Designation Information</h4>
+            </div>
+            <div class="card-body">
+
+                <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="tblData">
+                    <thead>
+                        <tr class="text-center">
+                            <th>#</th>
+                            <th>Designation</th>
+                            <th>Created</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+
+                            @if (Model.designations != null)
+                            {
+                                int Sl = 1;
+                                @foreach (var data in Model.designations.OrderByDescending(x => x.Id))
+                                {
+                                    <tr class="text-center">
+                                        <td>
+                                            @Sl
+                                        </td>
+                                        <td>@data?.name</td>
+                                        <td>@data?.createdAt?.ToString("dd-MM-yyyy")</td>
+                                        <td class="text-nowrap">
+                                            <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,'@data.name')">Edit</a>
+                                            <a href="#" class="badge badge-danger badge-shadow" onclick="Delete(@data.Id)">Delete</a>
+                                        </td>
+                                    </tr>
+                                    Sl = Sl + 1;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content End-->
+@section Scripts{
+
+
+    <script>
+        $(document).ready(function () {
+
+            $("#tblData").DataTable();
+            CleanData();
+        });
+
+        function CleanData() {
+            $("#DesignationId").val(0);
+            $("#name").val("");
+        }
+
+        $('#btnSave').click(function () {
+
+            $('#frmData').on('submit', function (event) {
+
+                event.preventDefault();
+                var frmdata = $('#frmData').serialize();
+                console.log(frmdata);
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to save this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/MasterDataArea/Designation/Index",
+                            type: "POST",
+                            data: frmdata,
+                            dataType: "json",
+                            beforeSend: function () {
+                                $('#btnSave').attr('disabled', 'disabled');
+                                $('#btnSave').val('Submitting...');
+
+                            },
+                        }).done(function (data) {
+
+                            $("#btnSave").removeAttr('disabled');
+                            if ($("#DesignationId").val() > 0) {
+                                swal.fire('success', 'Updated Successfully!', 'success').then(function () {
+                                    CleanData();
+                                    location.reload();
+                                });
+                            }
+                            else {
+                                swal.fire('success', 'Saved Successfully!', 'success').then(function () {
+                                    CleanData();
+                                    location.reload();
+                                });
+                            }
+
+
+                        }).fail(function () {
+                            $("#btnSave").removeAttr('disabled');
+                            swal.fire('warning', 'Failed!', 'warning');
+                        })
+                    }
+
+                });
+
+            })
+
+        })
+
+
+        function Edit(Id, name) {
+            CleanData();
+            $("#DesignationId").val(Id);
+            $("#name").val(name);
+
+        }
+
+        function Delete(Id) {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to Delete this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/MasterDataArea/Designation/Delete/" + Id,
+                        data: { Id: Id },
+                        type: 'POST',
+                    })
+                        .done(function () {
+
+                            swal.fire('Delete', 'Delete Successfully!', 'success').then(function () {
+                                window.location.reload();
+                            });
+                        })
+                        .fail(function () {
+                            swal.fire('Cancelled', 'It will not be deleted. Please try again later !!!', 'error');
+                        });
+                }
+
+            });
+        }
+    </script>
+}
+
+
+
+
+
+
+
+
+
+

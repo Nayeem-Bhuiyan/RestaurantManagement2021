@@ -1,0 +1,231 @@
+﻿@model CategoryViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Style{
+
+    <link href="~/assets/bundles/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2 {
+            width: 100%!important;
+        }
+    </style>
+}
+<!-- Main Content Begin-->
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+            <form asp-area="MasterDataArea" asp-controller="Category" asp-action="Index" id="frmData">
+                <div class="card text-center" style="background-color:green!important;color:white!important">
+                    <h4>Product Category</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <input type="hidden" id="CategoryId" name="CategoryId" value="0" />
+
+
+                            <div class="form-group">
+                                <label>category Name</label>
+                                <input type="text" id="categoryName" name="categoryName" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+
+                            <div class="form-group">
+                                <label>Parent Category</label>
+                                <select class="form-control" id="parentCategoryId" name="parentCategoryId" required>
+                                    <option value="" selected>Select</option>
+                                    <option value="0">Parent Category</option>
+                                    @foreach (var item in Model.categories)
+                                    {
+                                        <option value="@item.Id">@item.categoryName</option>
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-sm-left text-md-left text-lg-left text-xl-left">
+                    <button type="submit" class="btn btn-primary" id="btnSave">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Add New Category</h4>
+            </div>
+            <div class="card-body">
+             
+                    <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="tblData">
+                        <thead>
+                            <tr class="text-center">
+                                <th>#</th>
+                                <th>Category</th>
+                                <th>Parent Category</th>
+                                <th>Created</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+
+                                @if (Model.categories != null)
+                                {
+                                    int Sl = 1;
+                                    @foreach (var data in Model.categories.OrderByDescending(x => x.Id))
+                                    {
+                                        <tr class="text-center">
+                                            <td>
+                                                @Sl
+                                            </td>
+                                            <td>@data?.categoryName</td>
+                                            <td>
+                                                @if (data.parentCategoryId == 0)
+                                                {
+                                                <span>Parent</span>
+                                                }
+                                                else if (data.parentCategoryId > 0)
+                                                {
+                                                    @Model.categories.Where(X => X.Id == data.parentCategoryId).FirstOrDefault()?.categoryName
+                                                }
+                                                else
+                                                {
+                                                    <span>Unknown</span>
+                                                }
+
+                                            </td>
+                                            <td>@data?.createdAt?.ToString("dd-MM-yyyy")</td>
+                                            <td class="text-nowrap">
+                                                <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,'@data.categoryName',@data.parentCategoryId)">Edit</a>
+                                                <a href="#" class="badge badge-danger badge-shadow" onclick="Delete(@data.Id)">Delete</a>
+                                            </td>
+                                        </tr>
+                                        Sl = Sl + 1;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content End-->
+@section Scripts{
+    <script src="~/assets/bundles/select2/dist/js/select2.full.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#tblData").DataTable();
+            $('#parentCategoryId').select2();
+            CleanData();
+        });
+
+        function CleanData() {
+
+            $("#CategoryId").val("");
+            $("#categoryName").val("");
+            $("#parentCategoryId").val("");
+        }
+
+        $('#btnSave').click(function () {
+
+            $('#frmData').on('submit', function (event) {
+
+                event.preventDefault();
+                var frmdata = $('#frmData').serialize();
+                console.log(frmdata);
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to save this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/MasterDataArea/Category/Index",
+                            type: "POST",
+                            data: frmdata,
+                            dataType: "json",
+                            beforeSend: function () {
+                                $('#btnSave').attr('disabled', 'disabled');
+                                $('#btnSave').val('Submitting...');
+
+                            },
+                        }).done(function (data) {
+
+                            $("#btnSave").removeAttr('disabled');
+                            swal.fire('success', 'Saved Successfully!', 'success').then(function () {
+                                CleanData();
+                                location.reload();
+                            });
+
+                        }).fail(function () {
+                            $("#btnSave").removeAttr('disabled');
+                            swal.fire('warning', 'Failed!', 'warning');
+                        })
+                    }
+
+                });
+            })
+        })
+
+        function Edit(Id, categoryName, parentCategoryId) {
+            CleanData();
+            $("#CategoryId").val(Id);
+            $("#categoryName").val(categoryName);
+            $("#parentCategoryId").val(parentCategoryId).trigger('change');
+         
+        }
+
+        function Delete(Id) {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to Delete this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/MasterDataArea/Category/Delete/" + Id,
+                        data: { Id: Id },
+                        type: 'POST',
+                    })
+                        .done(function () {
+
+                            swal.fire('Delete', 'Delete Successfully!', 'success').then(function () {
+                                window.location.reload();
+                            });
+                        })
+                        .fail(function () {
+                            swal.fire('Cancelled', 'It will not be deleted. Please try again later !!!', 'error');
+                        });
+                }
+
+            });
+        }
+    </script>
+}
+

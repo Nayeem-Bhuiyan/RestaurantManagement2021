@@ -1,0 +1,563 @@
+﻿@model SalaryPaymentViewModel
+@{
+    ViewData["Title"] = "PaySalaryDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Style{
+
+
+    <style>
+      @@media (max-width: 767px) {
+    .table-responsive .dropdown-menu {
+        position: static !important;
+    }
+}
+@@media (min-width: 768px) {
+    .table-responsive {
+        overflow: inherit;
+    }
+}
+
+    </style>
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card" style="width:100%">
+            <div class="card-body">
+                <br />
+
+                <form asp-area="SalaryArea" asp-controller="SalaryPayment" asp-action="PaySalaryDetailJson" id="frmData">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+
+                                    <select id="month" name="month" class="form-control" required="">
+                                        <option value="">Select Month</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">Jun</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+
+                                    </select>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group row">
+                                <div class="col-md-8">
+
+                                    <select id="year" name="year" class="form-control" required="">
+                                        <option value="">Select Year</option>
+
+                                        @{
+                                            int year = 2020;
+                                            @for (int i = 1; i <= 2040; i++)
+                                            {
+                                                if (year == 2021)
+                                                {
+                                                    <option value="@year" selected>@year</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@year">@year</option>
+                                                }
+
+
+                                                year = year + 1;
+                                            }
+
+
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-primary" id="btnSearch">Search</button>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+                <br />
+                <br />
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <h5 style="color:blue!important">Payment Summary </h5>
+                <div>
+                    Total Payable : <label id="lblTotalPayableSalary"></label><br />
+                    Total Paid :<label id="lblTotalPaidSalary"></label><br />
+                    Total Due :<label id="lblTotalDueSalary"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="card" style="width:100%">
+            <div class="card-header">
+                <h4>All Salary Informations</h4>
+            </div>
+            <div class="card-body">
+               
+                    <table class="table table-striped table-bordered dt-responsive display nowrap" style="width:100%!important" id="tblData">
+                        <thead>
+                            <tr class="text-center">
+                                <th>#</th>
+                                <th>Employee</th>
+                                <th>Payable</th>
+                                <th>Paid</th>
+                                <th>Month</th>
+                                <th>Year</th>
+                                <th>Due</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+                        <tbody id="tblSalaryData">
+                            @{
+                                int Sl = 1;
+                                int? DueAmount = 0000;
+                                int? sumOfDueAmount = 0;
+                                int? sumOfPaidAmount = 0;
+                                int? sumOfPayableAmount = 0;
+
+                                @if (Model.salaryPayments != null)
+                                {
+
+
+                                    @foreach (var data in Model.salaryPayments)
+                                    {
+                                        DueAmount = data?.EarningSalary?.totalPayableSalary - data?.paidTotal;
+                                        sumOfDueAmount = sumOfDueAmount + DueAmount;
+                                        sumOfPaidAmount = sumOfPaidAmount + data?.paidTotal;
+                                        sumOfPayableAmount = sumOfPayableAmount + data?.EarningSalary?.totalPayableSalary;
+                                        <tr class="text-center">
+                                            <td>
+                                                @Sl
+                                            </td>
+                                            <td>@data?.Employee?.name</td>
+                                            <td>@data?.EarningSalary?.totalPayableSalary</td>
+                                            <td>@data?.paidTotal </td>
+                                            <td>
+                                                @if (data?.EarningSalary?.month == 1)
+                                                {
+                                                    <span>January</span>
+                                                }
+                                                else if (data?.EarningSalary?.month == 2)
+                                                {
+                                                    <span>February</span>
+                                                }
+                                                else if (data?.EarningSalary?.month == 3)
+                                                {
+                                                    <span>March</span>
+                                                }
+                                                else if (data?.EarningSalary?.month == 4)
+                                                {
+                                                    <span>April</span>
+                                                }
+                                                else if (data?.EarningSalary?.month == 5)
+                                                {
+                                                    <span>May</span>
+                                                }
+                                                else if (data?.EarningSalary?.month == 6)
+                                                {
+                                                    <span>Jun</span>
+                                                }
+                                                else if (data?.EarningSalary?.month == 7)
+                                                {
+                                                    <span>July</span>
+                                                }
+                                                else if (data?.EarningSalary?.month == 8)
+                                                {
+                                                    <span>Agust</span>
+                                                }
+                                                else if (data?.EarningSalary?.month == 9)
+                                                {
+                                                    <span>September</span>
+                                                }
+                                                else if (data?.EarningSalary?.month == 10)
+                                                {
+                                                    <span>October</span>
+                                                }
+                                                else if (data?.EarningSalary?.month == 11)
+                                                {
+                                                    <span>November</span>
+                                                }
+                                                else if (data?.EarningSalary?.month == 12)
+                                                {
+
+
+                                                    <span>December</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Unknown</span>
+                                                }
+                                            </td>
+                                            <td>@data?.EarningSalary?.year </td>
+                                            <td>@DueAmount?.ToString("D7")</td>
+                                            <td>
+                                                @if (DueAmount <= 0)
+                                                {
+
+                                                    <button type="button" class="btn btn-success" onclick="FullPaidMessage()">Full Paid</button>
+
+                                                }
+                                                else
+                                                {
+                                                    <button type="button" class="btn btn-warning" onclick="PayDueBill(@data.Id,@DueAmount,@data?.EarningSalary?.totalPayableSalary,@data.EmployeeId,@data.EarningSalaryId)">Pay Now</button>
+                                                }
+
+                                            </td>
+
+                                        </tr>
+                                        Sl = Sl + 1;
+
+
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                    </tr>
+                                }
+
+                            }
+
+
+                        </tbody>
+                    </table>
+               
+                
+                </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel"
+     aria-hidden="true" id="paymentModal" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">
+                    Salary Payment
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+
+                            <form asp-area="SalaryArea" asp-controller="SalaryPayment" asp-action="Payment" id="frmPayData">
+
+                                <div class="card-body">
+
+                                    <div class="row">
+
+                                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                            <input type="hidden" id="SalaryPaymentId" name="SalaryPaymentId" value="0" />
+                                            <input type="hidden" id="EmployeeId" name="EmployeeId" value="0" />
+                                            <input type="hidden" id="EarningSalaryId" name="EarningSalaryId" value="0" />
+                                            <input type="hidden" id="totalPayableSalary" name="totalPayableSalary" value="0" />
+                                            <input type="hidden" id="totalDueSalary" name="totalDueSalary" value="0" />
+                                            <div class="form-group">
+                                                <label>Pay Amount</label>
+                                                <input type="text" id="paidTotal" name="paidTotal" class="form-control" required="">
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary" id="btnSaveData">Submit</button>
+                                            <button type="reset" class="btn btn-success" id="btnRefreshData">Refresh</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+
+
+            $("#tblData").DataTable({
+
+            });
+            $("#lblTotalPayableSalary").text(@sumOfPayableAmount);
+            $("#lblTotalPaidSalary").text(@sumOfPaidAmount);
+            $("#lblTotalDueSalary").text(@DueAmount);
+            CleanData();
+            $('#paidTotal').keyup(function () {
+
+                if (parseInt($('#paidTotal').val()) > parseInt($("#totalDueSalary").val())) {
+                    $('#paidTotal').attr('readonly', true);
+                    swal.fire('warning', 'Sorry!! You Crossed maximum Pay Limit ' + parseInt($("#totalDueSalary").val()) + '', 'warning').then(function () {
+                        $('#paidTotal').val($("#totalDueSalary").val())
+                        $('#paidTotal').attr('readonly', false);
+                    });
+                }
+                 else {
+
+                }
+            })
+
+        });
+
+
+
+        function CleanData() {
+            $('#SalaryPaymentId').val("");
+            $('#EmployeeId').val("");
+            $('#EarningSalaryId').text("");
+            $('#totalPayableSalary').text("");
+            $('#totalDueSalary').val("");
+            $('#paidTotal').val("");
+
+        }
+
+
+        function FullPaidMessage() {
+            swal.fire('Sorry!!', ' This Salary Already Full Paid', 'warning');
+        }
+
+
+        function PayDueBill(Id,DueAmount,totalPayableSalary,EmployeeId,EarningSalaryId) {
+            CleanData();
+            $("#SalaryPaymentId").val(Id);
+            $("#paidTotal").val(DueAmount);
+            $("#totalDueSalary").val(DueAmount);
+            $("#SalaryPaymentId").val(Id);
+            $("#totalPayableSalary").val(totalPayableSalary);
+            $("#EmployeeId").val(EmployeeId);
+            $("#EarningSalaryId").val(EarningSalaryId);
+          
+
+            if (parseInt($("#totalDueSalary").val()) <= 0) {
+                swal.fire('Sorry!!', ' This Salary Already Full Paid', 'warning').then(function () {
+                    $('#paidTotal').val($("#totalDueSalary").val())
+                    $('#paidTotal').attr('readonly', false);
+                });
+            } else {
+                $("#paymentModal").modal('show');
+            }
+
+        }
+
+        $('#btnSaveData').click(function () {
+
+            $('#frmPayData').on('submit', function (event) {
+
+                event.preventDefault();
+                var frmdata = $('#frmPayData').serialize();
+                console.log(frmdata);
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to save this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/SalaryArea/SalaryPayment/Payment",
+                            type: "POST",
+                            data: frmdata,
+                            dataType: "json",
+                            beforeSend: function () {
+                                $('#btnSaveData').attr('disabled', 'disabled');
+                                $('#btnSaveData').val('Submitting...');
+                            },
+                        }).done(function (data) {
+                            $('#btnSaveData').removeAttr('disabled');
+                            $("#paymentModal").modal('hide');
+                            swal.fire('success', 'Saved Successfully!', 'success').then(function () {
+                                CleanData();
+                                location.reload();
+                            });
+
+                        }).fail(function () {
+                            swal.fire('warning', 'Failed!', 'warning');
+                            CleanData();
+                            $("#paymentModal").modal('hide');
+                            location.reload();
+                            $('#btnSaveData').removeAttr('disabled');
+                        })
+                    }
+
+                });
+
+            })
+
+        })
+
+
+
+
+
+        $('#btnSearch').click(function () {
+            $('#frmData').on('submit', function (event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "/SalaryArea/SalaryPayment/PaySalaryDetailsJson?InputYear=" + parseInt($("#year").val()) + "&InputMonth=" + parseInt($("#month").val()),
+                    data: { InputYear: parseInt($("#year").val()), InputMonth: parseInt($("#month").val()) },
+                    type: "POST",
+                    dataType: "json",
+                    beforeSend: function () {
+                        $('#btnSearch').attr('disabled', 'disabled');
+                        $('#btnSearch').val('Submitting...');
+                    },
+                }).done(function (data) {
+                    $("#btnSearch").removeAttr('disabled');
+                    if (data.length == 0) {
+                        swal.fire('Sorry!!', 'No Data Has Found', 'warning');
+                        $("#tblSalaryData").empty();
+                        $("#tblSalaryData").append('<tr></tr>');
+
+                        $("#lblTotalPayableSalary").text(0);
+                        $("#lblTotalPaidSalary").text(0);
+                        $("#lblTotalDueSalary").text(0);
+                    }
+                    else {
+
+                        $("#tblSalaryData").empty();
+                        var dueAmount = 0;
+                        var sl = 1;
+                        var sumOfPayableAmount = 0;
+                        var sumOfPaidAmount = 0;
+                        var sumOfDueAmount = 0;
+                        var monthName = "";
+                        var rowData = "";
+                        var ActionHtml = "";
+                        $.each(data, function (i, item) {
+
+                            if (item?.EarningSalary?.month == 1) {
+                                monthName = "January";
+                            }
+                            else if (item?.EarningSalary?.month == 2) {
+                                monthName = "February";
+                            }
+                            else if (item?.EarningSalary?.month == 3) {
+                                monthName = "March";
+                            }
+                            else if (item?.EarningSalary?.month == 4) {
+                                monthName = "April";
+                            }
+                            else if (item?.EarningSalary?.month == 5) {
+                                monthName = "May";
+                            }
+                            else if (item?.EarningSalary?.month == 6) {
+                                monthName = "Jun";
+                            }
+                            else if (item?.EarningSalary?.month == 7) {
+                                monthName = "July";
+                            }
+                            else if (item?.EarningSalary?.month == 8) {
+                                monthName = "Agust";
+                            }
+                            else if (item?.EarningSalary?.month == 9) {
+                                monthName = "September";
+                            }
+                            else if (item?.EarningSalary?.month == 10) {
+                                monthName = "October";
+                            }
+                            else if (item?.EarningSalary?.month == 11) {
+                                monthName = "November";
+                            }
+                            else if (item?.EarningSalary?.month == 12) {
+                                monthName = "December";
+                            }
+                            else {
+                                monthName = "Unknown";
+                            }
+
+                            dueAmount = item.EarningSalary.totalPayableSalary - item.paidTotal;
+                            sumOfPayableAmount = sumOfPayableAmount + item.EarningSalary.totalPayableSalary;
+                            sumOfPaidAmount = sumOfPaidAmount + item.paidTotal;
+                            sumOfDueAmount = sumOfDueAmount + dueAmount;
+                            if (dueAmount<=0) {
+                                ActionHtml = '<button type="button" class="btn btn-success" onclick="FullPaidMessage()">Full Paid</button>';
+                            }
+                            else {
+                                ActionHtml = '<button type="button" class="btn btn-warning" onclick="PayDueBill(${item.Id},${dueAmount},${item?.EarningSalary?.totalPayableSalary},${item.EmployeeId},${item.EarningSalaryId})">Pay Now</button>';
+                            }
+                             rowData = `<tr class= "text-center">
+                                    <td>
+                                        ${sl}
+                                    </td>
+                                    <td>${item?.Employee?.name}</td>
+                                    <td>${item.EarningSalary.totalPayableSalary}</td>
+                                    <td>${item.paidTotal}</td>
+                                    <td>${monthName}</td>
+                                    <td>${item.EarningSalary.year}</td>
+                                    <td>${dueAmount}</td>
+                                    <td>
+                                     ${ActionHtml}
+                                  </td>
+                                </tr>`
+                            sl = sl + i;
+                            $("#tblSalaryData").append(rowData);
+
+                        });
+                        
+                        $("#btnSearch").removeAttr('disabled');
+
+
+                        $("#lblTotalPayableSalary").empty();
+                        $("#lblTotalPayableSalary").text(sumOfPayableAmount);
+                        $("#lblTotalPaidSalary").empty();
+                        $("#lblTotalPaidSalary").text(sumOfPaidAmount);
+                        $("#lblTotalDueSalary").empty();
+                        $("#lblTotalDueSalary").text(sumOfDueAmount);
+                    }
+
+                }).fail(function () {
+                    swal.fire('warning', 'Failed!', 'warning');
+                    $("#btnSearch").removeAttr('disabled');
+                    $("#lblTotalPayableSalary").text(0);
+                    $("#lblTotalPaidSalary").text(0);
+                    $("#lblTotalDueSalary").text(0);
+                })
+            })
+
+        })
+
+
+    </script>
+}

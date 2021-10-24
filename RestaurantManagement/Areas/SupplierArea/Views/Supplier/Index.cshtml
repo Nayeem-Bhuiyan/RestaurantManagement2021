@@ -1,0 +1,229 @@
+﻿@model SupplierViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section Style{
+
+    <style>
+    </style>
+}
+<!-- Main Content Begin-->
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+            <form asp-area="SupplierArea" asp-controller="Supplier" asp-action="Index" id="frmData">
+                <div class="card text-center" style="background-color:green!important;color:white!important">
+                    <h4>Add New Supplier</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <input type="hidden" id="SupplierId" name="SupplierId" value="0" />
+
+
+                            <div class="form-group">
+                                <label>Supplier Name</label>
+                                <input type="text" id="supplierName" name="supplierName" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label>Contact No</label>
+                                <input type="text" id="contactNo" name="contactNo" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-sm-left text-md-left text-lg-left text-xl-left">
+                    <button type="submit" class="btn btn-primary" id="btnSave">Submit</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Add New Category</h4>
+            </div>
+            <div class="card-body">
+
+                <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="tblData">
+                    <thead>
+                        <tr class="text-center">
+                            <th>#</th>
+                            <th>Supplier</th>
+                            <th>Contact</th>
+                            <th>Created</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+
+                            @if (Model.suppliers != null)
+                            {
+                                int Sl = 1;
+                                @foreach (var data in Model.suppliers.OrderByDescending(x => x.Id))
+                                {
+                                    <tr class="text-center">
+                                        <td>
+                                            @Sl
+                                        </td>
+                                        <td>@data?.supplierName</td>
+                                        <td>
+                                            @data?.contactNo
+
+                                        </td>
+                                        <td>@data?.createdAt?.ToString("dd-MM-yyyy")</td>
+                                        <td class="text-nowrap">
+                                            <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,'@data.supplierName',@data.contactNo)">Edit</a>
+                                            <a href="#" class="badge badge-danger badge-shadow" onclick="Delete(@data.Id)">Delete</a>
+                                        </td>
+                                    </tr>
+                                    Sl = Sl + 1;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                </tr>
+                            }
+
+                        }
+
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content End-->
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+
+            $("#tblData").DataTable();
+            CleanData();
+        });
+
+
+
+
+        function CleanData() {
+
+            $("#SupplierId").val("");
+            $("#supplierName").val("");
+            $("#contactNo").val("");
+        }
+
+        $('#btnSave').click(function () {
+
+            $('#frmData').on('submit', function (event) {
+
+                event.preventDefault();
+                var frmdata = $('#frmData').serialize();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to save this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/SupplierArea/Supplier/Index",
+                            type: "POST",
+                            data: frmdata,
+                            dataType: "json",
+                            beforeSend: function () {
+                                $('#btnSave').attr('disabled', 'disabled');
+                                $('#btnSave').val('Submitting...');
+
+                            },
+                        }).done(function (data) {
+
+                            $("#btnSave").removeAttr('disabled');
+                            if ($("#SupplierId").val() > 0) {
+                                swal.fire('success', 'Updated Successfully!', 'success').then(function () {
+                                    CleanData();
+                                    location.reload();
+                                });
+                            }
+                            else {
+                                swal.fire('success', 'Save Successfully!', 'success').then(function () {
+                                    CleanData();
+                                    location.reload();
+                                });
+                            }
+
+
+                        }).fail(function () {
+                            $("#btnSave").removeAttr('disabled');
+                            swal.fire('warning', 'Failed!', 'warning');
+                        })
+                    }
+
+                });
+
+            })
+
+        })
+
+
+        function Edit(Id, supplierName, contactNo) {
+            CleanData();
+            $("#SupplierId").val(Id);
+            $("#supplierName").val(supplierName);
+            $("#contactNo").val(contactNo).trigger('change');
+
+        }
+
+        function Delete(Id) {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to Delete this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/SupplierArea/Supplier/Delete/" + Id,
+                        data: { Id: Id },
+                        type: 'POST',
+                    })
+                        .done(function () {
+
+                            swal.fire('Delete', 'Delete Successfully!', 'success').then(function () {
+                                window.location.reload();
+                            });
+                        })
+                        .fail(function () {
+                            swal.fire('Cancelled', 'It will not be deleted. Please try again later !!!', 'error');
+                        });
+                }
+
+            });
+        }
+    </script>
+}
+
+
+
