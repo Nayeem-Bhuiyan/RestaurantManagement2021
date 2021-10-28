@@ -1,0 +1,329 @@
+﻿@model SellRecordViewModel
+@{
+    ViewData["Title"] = "CreateSell";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Style{
+    <style>
+        .modal {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            bottom: 0;
+            left: 0;
+            z-index: 10040;
+            overflow: auto;
+            overflow-y: auto;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <button type="button" class="btn btn-primary float-right" onclick="ShowSelectedFoodItemsModal()">
+                    Select Sell Items
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="tblData">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Sl#</th>
+                                    <th>Item Id</th>
+                                    <th>Item</th>
+                                    <th>Image</th>
+                                    <th>Category</th>
+                                    <th>Unit</th>
+                                    <th>Unit Price</th>
+                                    <th>Vat</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+
+                                    @if (Model.dailyFoodItems != null)
+                                    {
+                                        int Sl = 1;
+                                        @foreach (var data in Model.dailyFoodItems.OrderByDescending(x => x.Id))
+                                        {
+                                            <tr class="text-center">
+                                                <td>
+                                                    @Sl
+                                                </td>
+                                                <td>@data?.FoodItem?.Id</td>
+                                                <td>@data?.FoodItem?.itemName</td>
+                                                <td><img src="/@data?.FoodItem?.foodImage" alt="Alternate Text" width="50" height="50" /></td>
+                                                <td>@data?.FoodCategory?.foodCategoryName</td>
+                                                <td>@data?.Unit?.unitName</td>
+                                                <td>@data?.FoodItem?.unitPrice</td>
+                                                <td>@data?.FoodItem?.vatPercent</td>
+                                                <td>@data?.FoodItem?.description</td>
+                                                <td class="text-nowrap">
+                                                    <a href="#" class="badge badge-primary badge-shadow btnAdd" onclick="AddDailyItem(@data?.FoodItem?.Id,'@data?.FoodItem?.foodImage.Substring(11)','@data?.FoodItem?.itemName',@data?.FoodCategoryId,'@data?.FoodCategory?.foodCategoryName',@data?.UnitId,'@data?.Unit?.unitName',@data?.FoodItem?.unitPrice,@data?.FoodItem?.vatPercent,'@data?.FoodItem?.description',@data?.FoodItem?.vatPercent)">Select</a>
+                                                    <a href="#" class="badge badge-warning badge-shadow btnCancel">Cancel</a>
+                                                </td>
+                                            </tr>
+                                            Sl = Sl + 1;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="SelectedFoodItemsModalLabel"
+     aria-hidden="true" id="SelectedFoodItemsModal" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<h5 class="modal-title" id="SelectedFoodItemsModalLabel">Selected Daily Food Item</h5>*@
+                <button type="button" class="btn btn-primary float-right btnSaveSellFoodItems" onclick="SaveAllItem()">
+                    Save All
+                </button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style=" height: 300px !important; max-height: 300px !important;">
+                <div class="row">
+                    <div class="col-sm-5 col-md-4">
+                        <div class="card d-inline bg-success text-white">
+                            <b>Total Bill</b> :<span id="GrandTotalBill"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-7 col-md-8">
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-striped table-bordered dt-responsive text-nowrap" style="width:100%" id="tblSelectedSellFoodItems">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Item Id</th>
+                                    <th>Item</th>
+                                    <th>Image</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th>Unit</th>
+                                    <th>Unit Price</th>
+                                    <th>Vat</th>
+                                    <th>SubTotal</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("#tblData").DataTable();
+            $("#tblData").on("click", "a.btnAdd", function () {
+                $(this).closest("tr").addClass("bg-warning");
+            })
+
+            $("#tblSelectedSellFoodItems").on("click", "a.btnRemove", function () {
+                var text = $(this).closest("tr").find("td").eq(0).find("span.FoodItemId").text().trim();
+
+                $("#tblData tbody tr").each(function (index) {
+                    var text2 = $(this).closest("tr").find("td:eq(1)").text().trim();
+                    if (text == text2) {
+                        $(this).closest("tr").removeClass("bg-warning");
+                    }
+                })
+
+                $(this).closest("tr").remove();
+                CalculateGrandTotal();
+            })
+
+            $("#tblData").on("click", "a.btnCancel", function () {
+                var text2 = $(this).closest("tr").find("td:eq(1)").text().trim();
+                $("#tblSelectedSellFoodItems tbody tr").each(function (index) {
+                    var text = $(this).closest("tr").find("td").eq(0).find("span.FoodItemId").text().trim();
+                    if (text2 == text) {
+                        $(this).closest("tr").remove();
+                    }
+                })
+
+                $(this).closest("tr").removeClass("bg-warning");
+                CalculateGrandTotal();
+            })
+
+
+        });
+
+
+
+
+
+        function SaveAllItem() {
+
+            if ($("#tblSelectedSellFoodItems tbody tr").length > 0) {
+
+
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to save this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let BoucherCode = Date.now().toString(36) + Math.random().toString(36).substring(2);
+                        $("#tblSelectedSellFoodItems tbody tr").each(function (index) {
+                            var CurrentRow = $(this);
+                            var frmData = {
+                                Id: 0,
+                                FoodItemId: parseInt($(this).find("td").eq(0).find("span.FoodItemId").text().trim()),
+                                boucherNo: BoucherCode,
+                                quantity: parseFloat($(this).find("td").eq(4).find('input.quantity').val().trim()),
+                                returnQuantity :"0", 
+                                unitPrice: parseFloat($(this).find("td").eq(6).text().trim()),
+                                vatAmount: parseFloat($(this).find("td").eq(7).text().trim()),
+                                subTotal: parseFloat($(this).find("td").eq(8).text().trim()),
+                                discount :"0",
+                                tableNo :"0",
+                                
+                            }
+
+                            $.ajax({
+                                url: "/SellArea/SellRecord/CreateSell",
+                                type: "POST",
+                                data: JSON.stringify(frmData),
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                beforeSend: function () {
+                                    $('#btnSaveSellFoodItems').attr('disabled', 'disabled');
+                                    $('#btnSaveSellFoodItems').val('Submitting...');
+                                },
+                            }).done(function (data) {
+                                CurrentRow.remove();
+                                if ($("#tblSelectedSellFoodItems tbody tr").length == 0) {
+
+                                    $("#SelectedFoodItemsModal").modal("hide");
+
+                                    $("#tblData tbody tr").each(function (index) {
+                                        $(this).removeClass("bg-warning");
+                                    })
+
+                                    swal.fire('success', 'Saved All Successfully!', 'success');
+                                    CalculateGrandTotal();
+                                }
+
+                            }).fail(function () {
+                                swal.fire('warning', 'Failed!', 'warning');
+                            })
+
+                        })
+
+                    }
+
+                });
+            }
+            else {
+                swal.fire('warning', 'Please select at least one Item', 'warning');
+            }
+
+        }
+
+        function AddDailyItem(Id, foodImage, itemName, FoodCategoryId, foodCategoryName, UnitId, unitName, unitPrice, vatPercent, description, vatPercent) {
+
+            if ($('#tblSelectedSellFoodItems tr:contains("' + itemName + '")').length > 0) {
+                 /* alert("Sorry!! you already add this item");*/
+                swal.fire('warning', 'Sorry!! you already add this item', 'warning');
+            } else {
+                $("#tblSelectedSellFoodItems tbody").append(
+                    `<tr class="text-center">
+                <td><span class="FoodItemId">${Id}</span ><span class="d-none FoodCategoryId">${FoodCategoryId}</span > <span class="d-none UnitId">${UnitId}</span> <span class="d-none vatPercent">${vatPercent}</span></td>
+                <td>${itemName}</td>
+                <td><img src="/FoodImages/${foodImage}" alt="Alternate Text" width="50" height="50" /></td>
+                <td>${foodCategoryName}</td>
+                <td><input type="text" name="quantity" id="quantity" class="quantity" value=""/></td>
+                <td>${unitName}</td>
+                <td>${unitPrice}</td>
+                <td>${vatPercent}</td>
+                <td>0</td>
+                <td> <a href="#" class="badge badge-danger badge-shadow btnRemove">Remove</a></td>
+            </tr>`
+                )
+            }
+            CalculateGrandTotal();
+        }
+
+
+
+        $("#tblSelectedSellFoodItems").on("keyup", "input.quantity", function () {
+            CalculateGrandTotal();
+        });
+
+        function CalculateGrandTotal() {
+            var grandTotal = 0;
+            if ($("#tblSelectedSellFoodItems tbody tr").length>0) {
+                $("#tblSelectedSellFoodItems tbody tr").each(function (index) {
+                    var Quantity = parseFloat($(this).find("td").eq(4).find('input.quantity').val().trim());
+                    var UnitPrice = parseFloat($(this).find("td").eq(6).text().trim());
+                    var Vat = parseFloat($(this).find("td").eq(7).text().trim());
+                    var subtotal = parseFloat(Quantity * UnitPrice + Vat);
+
+                    if (isNaN(subtotal)) {
+                        $(this).find("td").eq(8).text(0);
+                    } else {
+                        $(this).find("td").eq(8).text(subtotal);
+                    }
+
+
+                    if (!isNaN(subtotal)) {
+                        grandTotal += subtotal;
+                        if (!isNaN(grandTotal)) {
+                            $("#GrandTotalBill").text(grandTotal);
+                        } else {
+                            $("#GrandTotalBill").text("Invalid Number");
+                        }
+
+                    }
+
+                })
+            }
+            else {
+                $("#GrandTotalBill").text("");
+            }
+          
+        }
+
+
+        function ShowSelectedFoodItemsModal() {
+            $("#SelectedFoodItemsModal").modal("show");
+        }
+    </script>
+}
+
