@@ -43,11 +43,29 @@ namespace RestaurantManagement.Areas.SellArea.Controllers
                 SellRecord data = new SellRecord
                 {
                     Id = model.SellRecordId,
-
+                     FoodItemId =model.FoodItemId,
+                     boucherNo =model.boucherNo,  // must save with boucherNo from controller with auto increament
+                     quantity =model.quantity,
+                     returnQuantity =model.returnQuantity,  //by default zero will save 
+                     netQuantity =(model.quantity- model.returnQuantity),  //netQuantity=quantity-returnQuantity
+                     unitPrice =model.unitPrice,
+                     vatAmount =model.vatAmount, //form item table
+                     discount =model.discount,
+                     subTotal =model.subTotal,   //calculated Column ,subtotal=netQuantiy*unitPrice+(netQuantiy*unitPrice)*vatPercent-discount
+                     SellDate =DateTime.Now, //DateTime.Now
+                     tableNo =model.tableNo,
                 };
 
-                await _SellRecordRepo.AddAsync(data);
-                return RedirectToAction(nameof(Index));
+               var ans= await _SellRecordRepo.AddAsync(data);
+                if (ans==1)
+                {
+                    return Json(true);
+                }
+                else
+                {
+                    return Json(false);
+                }
+               
             }
             catch (Exception)
             {

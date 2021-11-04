@@ -207,14 +207,16 @@
                                 FoodItemId: parseInt($(this).find("td").eq(0).find("span.FoodItemId").text().trim()),
                                 boucherNo: BoucherCode,
                                 quantity: parseFloat($(this).find("td").eq(4).find('input.quantity').val().trim()),
-                                returnQuantity :"0",
+                                returnQuantity :0,
                                 unitPrice: parseFloat($(this).find("td").eq(6).text().trim()),
                                 vatAmount: parseFloat($(this).find("td").eq(7).text().trim()),
                                 subTotal: parseFloat($(this).find("td").eq(8).text().trim()),
-                                discount :"0",
-                                tableNo :"0",
+                                discount :0,
+                                tableNo :0,
 
                             }
+
+                            console.log(frmData);
 
                             $.ajax({
                                 url: "/SellArea/SellRecord/CreateSell",

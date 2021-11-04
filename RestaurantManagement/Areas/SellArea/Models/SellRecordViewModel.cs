@@ -14,7 +14,7 @@ namespace RestaurantManagement.Areas.SellArea.Models
         public int? FoodItemId { get; set; }
         public FoodItem FoodItem { get; set; }
 
-        public int? boucherNo { get; set; }  // must save with boucherNo from controller with auto increament
+        public string boucherNo { get; set; }  // must save with boucherNo from controller with auto increament
         public float? quantity { get; set; }
         public float? returnQuantity { get; set; }  //by default zero will save 
         public float? netQuantity { get; set; }  //netQuantity=quantity-returnQuantity
