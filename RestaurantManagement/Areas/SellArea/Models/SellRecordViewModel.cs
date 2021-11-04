@@ -30,6 +30,7 @@ namespace RestaurantManagement.Areas.SellArea.Models
         //(3=completed) diye Sell List toiri hobe
 
         public virtual IEnumerable<FoodItem> foodItems { get; set; }
+        public virtual IEnumerable<DailyFoodItem> dailyFoodItems { get; set; }
         public virtual IEnumerable<SellRecord> sellRecords { get; set; }
         public virtual SellRecord sellRecord { get; set; }
     }

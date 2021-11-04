@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestaurantManagement.Areas.SellArea.Models;
+using RestaurantManagement.Data.Entity.FoodItemEntity;
 using RestaurantManagement.Data.Entity.SellEntity;
 using RestaurantManagement.GenericRepo.GenericRepositoryService.Interface;
 using System;
@@ -13,27 +14,28 @@ namespace RestaurantManagement.Areas.SellArea.Controllers
     public class SellRecordController : Controller
     {
         private IGenericRepository<SellRecord> _SellRecordRepo;
+        private IGenericRepository<DailyFoodItem> _DailyFoodItemRepo;
 
-        public SellRecordController(IGenericRepository<SellRecord> SellRecordRepo)
+        public SellRecordController(IGenericRepository<SellRecord> SellRecordRepo, IGenericRepository<DailyFoodItem> DailyFoodItemRepo)
         {
             _SellRecordRepo = SellRecordRepo;
+            _DailyFoodItemRepo = DailyFoodItemRepo;
         }
 
         #region Crud_Section
-
+        //GET:/SellArea/SellRecord/CreateSell
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult CreateSell()
         {
             SellRecordViewModel model = new SellRecordViewModel
             {
-                sellRecords = await _SellRecordRepo.GetAllAsync(),
+                dailyFoodItems= _DailyFoodItemRepo.GetAllIncluding(x=>x.FoodItem,x=>x.FoodCategory,x=>x.Unit)
             };
             return View(model);
         }
-
+        //POST:/SellArea/SellRecord/CreateSell
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index([FromForm] SellRecordViewModel model)
+        public async Task<IActionResult> CreateSell([FromBody] SellRecordViewModel model)
         {
 
             try
@@ -54,7 +56,7 @@ namespace RestaurantManagement.Areas.SellArea.Controllers
 
         }
 
-
+        //POST:/SellArea/SellRecord/Delete
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
