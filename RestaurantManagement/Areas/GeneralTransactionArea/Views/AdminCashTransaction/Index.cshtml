@@ -61,8 +61,9 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h4>Cash Transaction Details</h4>
+                <b>Total Balance :<span class="text-right bg-primary text-white h5" id="showBalnce"></span></b>
             </div>
             <div class="card-body">
 
@@ -158,125 +159,144 @@
 <!-- Main Content End-->
 @section Scripts{
 
-    <script>
-        $(document).ready(function () {
-            $("#tblData").DataTable();
-            CleanData();
+<script>
+    $(document).ready(function () {
+        $("#tblData").DataTable();
+        CleanData();
 
-            $("#payToDiv").hide();
-            $('#checkPayto').click(function () {
-                if ($(this).is(':checked')) {
-                    $("#checkPAyToBox").hide();
-                    $("#payToDiv").show();
+        var Valance=parseInt((@Model.adminCashTransactions.Where(x=>x.transactionType==1).Sum(x=>x.cashAmount))-(@Model.adminCashTransactions.Where(x=>x.transactionType==2).Sum(x=>x.cashAmount)));
+        $("#showBalnce").text(Valance);
 
-                    checkPAyToBox
+        $("#payToDiv").hide();
+        $('#checkPayto').click(function () {
+            if ($(this).is(':checked')) {
+                $("#checkPAyToBox").hide();
+                $("#payToDiv").show();
 
-                }
-                else {
-                    $("#payToDiv").hide();
-                    $("#checkPAyToBox").show();
-                }
-            })
-        });
+                checkPAyToBox
 
+            }
+            else {
+                $("#payToDiv").hide();
+                $("#checkPAyToBox").show();
+            }
+        })
 
-        function Edit(Id, cashAmount, transactionType, payTo, payBy, createdAt, isApproved) {
-            CleanData();
-            $("#AdminCashTransactionId").val(Id);
-            $("#transactionType").val(transactionType);
-            $("#cashAmount").val(cashAmount);
-            $("#payTo").val(payTo);
-
-        }
-
-        function CleanData() {
-            $("#AdminCashTransactionId").val("");
-            $("#transactionType").val("");
-            $("#cashAmount").val("");
-            $("#payTo").val("");
+        $("#transactionType").change(function(){
+            
+        if($(this).val()==2 && parseInt($("#cashAmount").val())>parseInt($("#showBalnce").text()))
+        {
+            swal.fire('Sorry!!', 'Maximum Balance Limit:'+parseInt($("#showBalnce").text()), 'warning').then(function () {
+                            $("#cashAmount").val(""); 
+                            $("#cashAmount").val(parseInt($("#showBalnce").text())); 
+            });
+        }else{
 
         }
-
-        $('#btnSave').click(function () {
-
-            $('#frmData').on('submit', function (event) {
-
-                event.preventDefault();
-                var frmdata = $('#frmData').serialize();
-                console.log(frmdata);
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You want to save this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, save it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: "/GeneralTransactionArea/AdminCashTransaction/Index",
-                            type: "POST",
-                            data: frmdata,
-                            dataType: "json",
-                            beforeSend: function () {
-                                $('#btnSave').attr('disabled', 'disabled');
-                                $('#btnSave').val('Submitting...');
-
-                            },
-                        }).done(function (data) {
-
-                            $("#btnSave").removeAttr('disabled');
-                            swal.fire('success', 'Saved Successfully!', 'success').then(function () {
-                                CleanData();
-                                location.reload();
-                            });
-
-                        }).fail(function () {
-                            $("#btnSave").removeAttr('disabled');
-                            swal.fire('warning', 'Failed!', 'warning');
-                        })
-                    }
-
-                });
-
-            })
-
         })
 
 
 
+    });
 
-        function Delete(Id) {
 
+    function Edit(Id, cashAmount, transactionType, payTo, payBy, createdAt, isApproved) {
+        CleanData();
+        $("#AdminCashTransactionId").val(Id);
+        $("#transactionType").val(transactionType);
+        $("#cashAmount").val(cashAmount);
+        $("#payTo").val(payTo);
+
+    }
+
+    function CleanData() {
+        $("#AdminCashTransactionId").val("");
+        $("#transactionType").val("");
+        $("#cashAmount").val("");
+        $("#payTo").val("");
+
+    }
+
+    $('#btnSave').click(function () {
+
+        $('#frmData').on('submit', function (event) {
+
+            event.preventDefault();
+            var frmdata = $('#frmData').serialize();
+            console.log(frmdata);
             Swal.fire({
                 title: 'Are you sure?',
-                text: "You want to Delete this!",
+                text: "You want to save this!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, Delete it!'
+                confirmButtonText: 'Yes, save it!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "/GeneralTransactionArea/AdminCashTransaction/Delete/" + Id,
-                        data: { Id: Id },
-                        type: 'POST',
-                    })
-                        .done(function () {
-                            swal.fire('Delete', 'Delete Successfully!', 'success').then(function () {
-                                window.location.reload();
-                            });
-                        })
-                        .fail(function () {
-                            swal.fire('Cancelled', 'It will not be deleted. Please try again later !!!', 'error');
+                        url: "/GeneralTransactionArea/AdminCashTransaction/Index",
+                        type: "POST",
+                        data: frmdata,
+                        dataType: "json",
+                        beforeSend: function () {
+                            $('#btnSave').attr('disabled', 'disabled');
+                            $('#btnSave').val('Submitting...');
+
+                        },
+                    }).done(function (data) {
+
+                        $("#btnSave").removeAttr('disabled');
+                        swal.fire('success', 'Saved Successfully!', 'success').then(function () {
+                            CleanData();
+                            location.reload();
                         });
+
+                    }).fail(function () {
+                        $("#btnSave").removeAttr('disabled');
+                        swal.fire('warning', 'Failed!', 'warning');
+                    })
                 }
 
             });
-        }
-    </script>
+
+        })
+
+    })
+
+
+
+
+    function Delete(Id) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to Delete this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/GeneralTransactionArea/AdminCashTransaction/Delete/" + Id,
+                    data: { Id: Id },
+                    type: 'POST',
+                })
+                    .done(function () {
+                        swal.fire('Delete', 'Delete Successfully!', 'success').then(function () {
+                            window.location.reload();
+                        });
+                    })
+                    .fail(function () {
+                        swal.fire('Cancelled', 'It will not be deleted. Please try again later !!!', 'error');
+                    });
+            }
+
+        });
+    }
+</script>
 }
 
 
