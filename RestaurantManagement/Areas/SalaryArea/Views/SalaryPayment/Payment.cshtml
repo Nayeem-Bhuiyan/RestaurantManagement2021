@@ -3,12 +3,7 @@
     ViewData["Title"] = "Payment";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
-
 @section Style{
-
-
     <style>
     </style>
 }
@@ -70,12 +65,9 @@
                                     <button type="button" class="btn btn-primary" onclick="ShowModal()">
                                         Paid Salary
                                     </button>
-                                    
-                                        <button type="button" class="btn btn-success text-right" onclick="ShowPayRecordModal()">
-                                            Pay Record
-                                        </button>
-                                   
-                                    
+                                    <button type="button" class="btn btn-success text-right" onclick="ShowPayRecordModal()">
+                                        Pay Record
+                                    </button>
                                 </li>
                             </ul>
                         </div>
@@ -83,9 +75,7 @@
                 </div>
             </form>
         </div>
-
     </div>
-
 </div>
 
 <div class="row">
@@ -129,84 +119,85 @@
                                     deduction = data?.SalaryStructure?.totalSalary - data?.totalPayableSalary;
                                     basicPay = data?.SalaryStructure?.totalSalary - deduction;
 
-                                    paidAmount = Model.salaryPayments.Where(x=>x.EarningSalaryId==data.Id).FirstOrDefault()?.paidTotal;
+                                    paidAmount = Model.salaryPayments.Where(x => x.EarningSalaryId == data.Id).FirstOrDefault()?.paidTotal;
                                     if (paidAmount != data.totalPayableSalary)
                                     {
-                        <tr class="text-center">
-                            <td>
-                                @Sl
-                            </td>
-                            <td class="text-nowrap">
-                                <a href="#" class="badge badge-warning badge-shadow" onclick="ProcessPayment(@data.Id,@data.EmployeeId,'@data.Employee.name','@data.Employee.contactNo',@data?.SalaryStructure?.totalSalary,@data.totalPayableSalary,@paidAmount)">Process Pay</a>
-                            </td>
-                            <td>@data?.Employee.name</td>
-                            <td>@data?.SalaryStructure?.totalSalary</td>
-                            <td>@data?.SalaryStructure?.hourlyPayRate</td>
-                            <td>@deduction</td>
-                            <td>@basicPay</td>
-                            <td>@data?.overTimePayAmount</td>
-                            <td>@data?.special</td>
-                            <td>@data?.totalPayableSalary</td>
-                            <td>
-                                @if (data?.month == 1)
-                                {
-                                    <span>January</span>
-                                }
-                                else if (data?.month == 2)
-                                {
-                                    <span>February</span>
-                                }
-                                else if (data?.month == 3)
-                                {
-                                    <span>March</span>
-                                }
-                                else if (data?.month == 4)
-                                {
-                                    <span>April</span>
-                                }
-                                else if (data?.month == 5)
-                                {
-                                    <span>May</span>
-                                }
-                                else if (data?.month == 6)
-                                {
-                                    <span>Jun</span>
-                                }
-                                else if (data?.month == 7)
-                                {
-                                    <span>July</span>
-                                }
-                                else if (data?.month == 8)
-                                {
-                                    <span>Agust</span>
-                                }
-                                else if (data?.month == 9)
-                                {
-                                    <span>September</span>
-                                }
-                                else if (data?.month == 10)
-                                {
-                                    <span>October</span>
-                                }
-                                else if (data?.month == 11)
-                                {
-                                    <span>November</span>
-                                }
-                                else if (data?.month == 12)
-                                {
+
+                                        <tr class="text-center">
+                                            <td>
+                                                @Sl
+                                            </td>
+                                            <td class="text-nowrap">
+                                                <a href="#" class="badge badge-warning badge-shadow" onclick="ProcessPayment(@data.Id,@data.EmployeeId,'@data.Employee.name','@data.Employee.contactNo',@data?.SalaryStructure?.totalSalary,@data.totalPayableSalary,@paidAmount)">Process Pay</a>
+                                            </td>
+                                            <td>@data?.Employee.name</td>
+                                            <td>@data?.SalaryStructure?.totalSalary</td>
+                                            <td>@data?.SalaryStructure?.hourlyPayRate</td>
+                                            <td>@deduction</td>
+                                            <td>@basicPay</td>
+                                            <td>@data?.overTimePayAmount</td>
+                                            <td>@data?.special</td>
+                                            <td>@data?.totalPayableSalary</td>
+                                            <td>
+                                                @if (data?.month == 1)
+                                                {
+                                                    <span>January</span>
+                                                }
+                                                else if (data?.month == 2)
+                                                {
+                                                    <span>February</span>
+                                                }
+                                                else if (data?.month == 3)
+                                                {
+                                                    <span>March</span>
+                                                }
+                                                else if (data?.month == 4)
+                                                {
+                                                    <span>April</span>
+                                                }
+                                                else if (data?.month == 5)
+                                                {
+                                                    <span>May</span>
+                                                }
+                                                else if (data?.month == 6)
+                                                {
+                                                    <span>Jun</span>
+                                                }
+                                                else if (data?.month == 7)
+                                                {
+                                                    <span>July</span>
+                                                }
+                                                else if (data?.month == 8)
+                                                {
+                                                    <span>Agust</span>
+                                                }
+                                                else if (data?.month == 9)
+                                                {
+                                                    <span>September</span>
+                                                }
+                                                else if (data?.month == 10)
+                                                {
+                                                    <span>October</span>
+                                                }
+                                                else if (data?.month == 11)
+                                                {
+                                                    <span>November</span>
+                                                }
+                                                else if (data?.month == 12)
+                                                {
 
 
-                                    <span>December</span>
-                                }
-                                else
-                                {
-                                    <span>Unknown</span>
-                                }
-                            </td>
-                            <td>@data?.year</td>
-                            <td>@data?.absentTotal</td>
+                                                    <span>December</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Unknown</span>
+                                                }
+                                            </td>
+                                            <td>@data?.year</td>
+                                            <td>@data?.absentTotal</td>
 
-                        </tr>
+                                        </tr>
                                         Sl = Sl + 1;
                                     }
                                     else
@@ -233,13 +224,7 @@
     </div>
 </div>
 
-
-
-
-
-
 <!-- The Modal -->
-
 <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" id="SalaryPayMentModal" data-backdrop="false">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -283,82 +268,82 @@
                                             @foreach (var data in Model.salaryPayments.OrderByDescending(x => x.Id))
                                             {
                                                 dueAmount = data?.EarningSalary.totalPayableSalary - data?.paidTotal;
-                                    <tr class="text-center">
-                                        <td>
-                                            @empSl
-                                        </td>
-                                        <td>@data?.Employee.name</td>
-                                        <td>@data?.Employee.empID</td>
-                                        <td>@data?.Employee.contactNo</td>
-                                        <td>@data?.EarningSalary.totalPayableSalary</td>
+                                                <tr class="text-center">
+                                                    <td>
+                                                        @empSl
+                                                    </td>
+                                                    <td>@data?.Employee.name</td>
+                                                    <td>@data?.Employee.empID</td>
+                                                    <td>@data?.Employee.contactNo</td>
+                                                    <td>@data?.EarningSalary.totalPayableSalary</td>
 
-                                        <td>@data?.paidTotal</td>
-                                        <td>@dueAmount</td>
-                                        <td>
-                                            @if (data?.EarningSalary?.month == 1)
-                                            {
-                                                <span>January</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 2)
-                                            {
-                                                <span>February</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 3)
-                                            {
-                                                <span>March</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 4)
-                                            {
-                                                <span>April</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 5)
-                                            {
-                                                <span>May</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 6)
-                                            {
-                                                <span>Jun</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 7)
-                                            {
-                                                <span>July</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 8)
-                                            {
-                                                <span>Agust</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 9)
-                                            {
-                                                <span>September</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 10)
-                                            {
-                                                <span>October</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 11)
-                                            {
-                                                <span>November</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 12)
-                                            {
-
-
-                                                <span>December</span>
-                                            }
-                                            else
-                                            {
-                                                <span>Unknown</span>
-                                            }
-                                        </td>
-                                        <td>@data?.EarningSalary?.year</td>
-                                        <td>@data?.processDate?.ToString("dd-MM-yyyy")</td>
-                                        <td class="text-nowrap">
-                                            <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,@data.EmployeeId)">Edit</a>
-
-                                        </td>
+                                                    <td>@data?.paidTotal</td>
+                                                    <td>@dueAmount</td>
+                                                    <td>
+                                                        @if (data?.EarningSalary?.month == 1)
+                                                        {
+                                                            <span>January</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 2)
+                                                        {
+                                                            <span>February</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 3)
+                                                        {
+                                                            <span>March</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 4)
+                                                        {
+                                                            <span>April</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 5)
+                                                        {
+                                                            <span>May</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 6)
+                                                        {
+                                                            <span>Jun</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 7)
+                                                        {
+                                                            <span>July</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 8)
+                                                        {
+                                                            <span>Agust</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 9)
+                                                        {
+                                                            <span>September</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 10)
+                                                        {
+                                                            <span>October</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 11)
+                                                        {
+                                                            <span>November</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 12)
+                                                        {
 
 
-                                    </tr>
+                                                            <span>December</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Unknown</span>
+                                                        }
+                                                    </td>
+                                                    <td>@data?.EarningSalary?.year</td>
+                                                    <td>@data?.processDate?.ToString("dd-MM-yyyy")</td>
+                                                    <td class="text-nowrap">
+                                                        <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,@data.EmployeeId)">Edit</a>
+
+                                                    </td>
+
+
+                                                </tr>
                                                 empSl = empSl + 1;
                                             }
                                         }
@@ -421,83 +406,83 @@
                                             int paySl = 1;
 
 
-                                            @foreach (var data in Model.salaryPayRecords.OrderByDescending(x=>x.Id))
-                                            {
-                                                
-                                    <tr class="text-center">
-                                        <td>
-                                            @paySl
-                                        </td>
-                                        <td>@data?.Employee.name</td>
-                                        <td>@data?.Employee.empID</td>
-                                        <td>@data?.Employee.contactNo</td>
-                                        <td>@data?.EarningSalary.totalPayableSalary</td>
-                                        <td>@data?.paidAmount</td>
-                                        <td>@data?.EarningSalary.year</td>
-                                        <td>
-                                            @if (data?.EarningSalary?.month == 1)
-                                            {
-                                                <span>January</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 2)
-                                            {
-                                                <span>February</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 3)
-                                            {
-                                                <span>March</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 4)
-                                            {
-                                                <span>April</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 5)
-                                            {
-                                                <span>May</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 6)
-                                            {
-                                                <span>Jun</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 7)
-                                            {
-                                                <span>July</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 8)
-                                            {
-                                                <span>Agust</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 9)
-                                            {
-                                                <span>September</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 10)
-                                            {
-                                                <span>October</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 11)
-                                            {
-                                                <span>November</span>
-                                            }
-                                            else if (data?.EarningSalary?.month == 12)
+                                            @foreach (var data in Model.salaryPayRecords.OrderByDescending(x => x.Id))
                                             {
 
+                                                <tr class="text-center">
+                                                    <td>
+                                                        @paySl
+                                                    </td>
+                                                    <td>@data?.Employee.name</td>
+                                                    <td>@data?.Employee.empID</td>
+                                                    <td>@data?.Employee.contactNo</td>
+                                                    <td>@data?.EarningSalary.totalPayableSalary</td>
+                                                    <td>@data?.paidAmount</td>
+                                                    <td>@data?.EarningSalary.year</td>
+                                                    <td>
+                                                        @if (data?.EarningSalary?.month == 1)
+                                                        {
+                                                            <span>January</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 2)
+                                                        {
+                                                            <span>February</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 3)
+                                                        {
+                                                            <span>March</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 4)
+                                                        {
+                                                            <span>April</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 5)
+                                                        {
+                                                            <span>May</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 6)
+                                                        {
+                                                            <span>Jun</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 7)
+                                                        {
+                                                            <span>July</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 8)
+                                                        {
+                                                            <span>Agust</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 9)
+                                                        {
+                                                            <span>September</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 10)
+                                                        {
+                                                            <span>October</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 11)
+                                                        {
+                                                            <span>November</span>
+                                                        }
+                                                        else if (data?.EarningSalary?.month == 12)
+                                                        {
 
-                                                <span>December</span>
-                                            }
-                                            else
-                                            {
-                                                <span>Unknown</span>
-                                            }
-                                        </td>
-                                        <td>@data?.paidDate?.ToString("dd-MM-yyyy")</td>
-                                        <td class="text-nowrap">
-                                            <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,@data.EmployeeId)">Edit</a>
-                                          
-                                        </td>
+
+                                                            <span>December</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Unknown</span>
+                                                        }
+                                                    </td>
+                                                    <td>@data?.paidDate?.ToString("dd-MM-yyyy")</td>
+                                                    <td class="text-nowrap">
+                                                        <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,@data.EmployeeId)">Edit</a>
+
+                                                    </td>
 
 
-                                    </tr>
+                                                </tr>
                                                 paySl = paySl + 1;
                                             }
                                         }
@@ -588,17 +573,17 @@
             $('#txtTotalDue').text(dueAmount);
             $('#txtTotalPaid').text(paidAmount);
             getPaidAmount();
-          
+
         }
 
         function getPaidAmount() {
-            
+
             if (parseInt($('#paidTotal').val()) > parseInt($('#txtTotalDue').text())) {
                 $('#paidTotal').attr('readonly', true);
-                swal.fire('warning', 'You Crossed The Maximum Pay Limit :' + parseInt($('#txtTotalDue').text())+'', 'warning').then(function () {
+                swal.fire('warning', 'You Crossed The Maximum Pay Limit :' + parseInt($('#txtTotalDue').text()) + '', 'warning').then(function () {
                     $('#paidTotal').attr('readonly', false);
                     $('#paidTotal').val(parseInt($('#txtTotalDue').text()));
-                    
+
                 });
 
             }

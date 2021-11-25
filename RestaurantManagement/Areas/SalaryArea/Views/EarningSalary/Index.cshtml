@@ -27,7 +27,6 @@
                                 <th>Absent</th>
                                 <th>Over Time PayAmount</th>
                                 <th>Month</th>
-                                <th>Year</th>
                                 <th>Special</th>
                                 <th>Action</th>
                             </tr>
@@ -48,8 +47,7 @@
                                             <td>@data?.totalPayableSalary</td>
                                             <td>@data?.absentTotal</td>
                                             <td>@data?.overTimePayAmount</td>
-                                            <td>@data?.month</td>
-                                            <td>@data?.year</td>
+                                            <td>@data?.month-@data?.year</td>
                                             <td>@data?.special</td>
                                             <td class="text-nowrap">
                                                 <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id)">Edit</a>

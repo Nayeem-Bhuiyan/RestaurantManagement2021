@@ -63,7 +63,7 @@
                                 <label>Over time(Hours)</label>
                                 <input type="text" id="overtimes" name="overtimes" class="form-control">
                             </div>
-                         
+
 
 
                         </div>
@@ -97,8 +97,8 @@
                                         int year = 2020;
                                         @for (int i = 1; i <= 2040; i++)
                                         {
-                                           
-                                            
+
+
                                             if (year == DateTime.Now.Year)
                                             {
                                                 <option value="@year" selected>@year</option>
@@ -129,6 +129,7 @@
                 </div>
                 <div class="card-footer text-sm-left text-md-left text-lg-left text-xl-left">
                     <button type="submit" class="btn btn-primary" id="btnSave">Submit</button>
+                    <button type="reset" class="btn btn-success" id="btnSave">Cancel</button>
                 </div>
             </form>
         </div>
@@ -237,7 +238,6 @@
                                     <th>Special</th>
                                     <th>Net Payable</th>
                                     <th>Month</th>
-                                    <th>Year</th>
                                     <th>Absent</th>
                                     <th>Action</th>
                                 </tr>
@@ -266,8 +266,61 @@
                                                 <td>@data?.overTimePayAmount</td>
                                                 <td>@data?.special</td>
                                                 <td>@data?.totalPayableSalary</td>
-                                                <td>@data?.month</td>
-                                                <td>@data?.year</td>
+                                                <td>
+
+                                                    @if (data?.month == 1)
+                                                    {
+                                                <span>January</span><span>/@data?.year</span>
+                                            }
+                                            else if (data?.month == 2)
+                                            {
+                                                <span>February</span><span>/@data?.year</span>
+                                            }
+                                            else if (data?.month == 3)
+                                            {
+                                                <span>March</span><span>/@data?.year</span>
+                                            }
+                                            else if (data?.month == 4)
+                                            {
+                                                <span>April</span><span>/@data?.year</span>
+                                            }
+                                            else if (data?.month == 5)
+                                            {
+                                                <span>May</span><span>/@data?.year</span>
+                                            }
+                                            else if (data?.month == 6)
+                                            {
+                                                <span>Jun</span><span>/@data?.year</span>
+                                            }
+                                            else if (data?.month == 7)
+                                            {
+                                                <span>July</span><span>/@data?.year</span>
+                                            }
+                                            else if (data?.month == 8)
+                                            {
+                                                <span>Agust</span><span>/@data?.year</span>
+                                            }
+                                            else if (data?.month == 9)
+                                            {
+                                                <span>September</span><span>/@data?.year</span>
+                                            }
+                                            else if (data?.month == 10)
+                                            {
+                                                <span>October</span><span>/@data?.year</span>
+                                            }
+                                            else if (data?.month == 11)
+                                            {
+                                                <span>November</span><span>/@data?.year</span>
+                                            }
+                                            else if (data?.month == 12)
+                                            {
+                                                <span>December</span><span>/@data?.year</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Unknown</span>
+                                            }
+                                                </td>
                                                 <td>@data?.absentTotal hr</td>
                                                 <td class="text-nowrap">
 
