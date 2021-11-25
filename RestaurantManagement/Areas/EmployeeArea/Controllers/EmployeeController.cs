@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestaurantManagement.Areas.EmployeeArea.Models;
 using RestaurantManagement.Data.Entity.EmployeeEntity;
+using RestaurantManagement.Data.Entity.MasterDataEntity;
 using RestaurantManagement.GenericRepo.GenericRepositoryService.Interface;
 using RestaurantManagement.Helpers;
 using RestaurantManagement.Services.EmpService.Interface;
@@ -15,11 +16,16 @@ namespace RestaurantManagement.Areas.EmployeeArea.Controllers
     public class EmployeeController : Controller
     {
         private IGenericRepository<Employee> _employeeRepo;
+        private IGenericRepository<Gender> _genderRepo;
+        private IGenericRepository<Designation> _designationRepo;
 
 
-        public EmployeeController(IGenericRepository<Employee> employeeRepo)
+        public EmployeeController(IGenericRepository<Employee> employeeRepo, IGenericRepository<Gender> genderRepo, IGenericRepository<Designation> designationRepo)
         {
             _employeeRepo = employeeRepo;
+            _designationRepo = designationRepo;
+            _genderRepo = genderRepo;
+
         }
 
 
@@ -30,6 +36,8 @@ namespace RestaurantManagement.Areas.EmployeeArea.Controllers
             EmployeeViewModel model = new EmployeeViewModel()
             {
                 //employees = await _employeeService.GetEmployeeList()
+                genders=_genderRepo.GetAll(),
+                designations=_designationRepo.GetAll(),
                 employees = _employeeRepo.GetAllIncluding(x=>x.Gender,x=>x.Department,x=>x.Designation)
             };
             return View(model);
