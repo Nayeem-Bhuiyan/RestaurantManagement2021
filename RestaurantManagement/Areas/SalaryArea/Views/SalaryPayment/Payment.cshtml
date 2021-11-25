@@ -8,19 +8,15 @@
     </style>
 }
 <!-- Main Content Begin-->
-
 <div class="row">
     <div class="col-md-12 ">
         <div class="card">
-
             <form asp-area="SalaryArea" asp-controller="SalaryPayment" asp-action="Payment" id="frmData">
                 <div class="card text-center" style="background-color:green!important;color:white!important">
                     <h4>Salary Payment</h4>
                 </div>
                 <div class="card-body">
-
                     <div class="row">
-
                         <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                             <input type="hidden" id="SalaryPaymentId" name="SalaryPaymentId" value="0" />
                             <input type="hidden" id="EmployeeId" name="EmployeeId" value="0" />
@@ -210,13 +206,9 @@
                                 <tr>
                                 </tr>
                             }
-
                         }
-
-
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
@@ -323,8 +315,6 @@
                                                         }
                                                         else if (data?.EarningSalary?.month == 12)
                                                         {
-
-
                                                             <span>December</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else
@@ -335,10 +325,7 @@
                                                     <td>@data?.processDate?.ToString("dd-MM-yyyy")</td>
                                                     <td class="text-nowrap">
                                                         <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,@data.EmployeeId)">Edit</a>
-
                                                     </td>
-
-
                                                 </tr>
                                                 empSl = empSl + 1;
                                             }
@@ -348,15 +335,10 @@
                                             <tr>
                                             </tr>
                                         }
-
                                     }
-
-
                                 </tbody>
                             </table>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -470,10 +452,7 @@
                                                     <td>@data?.paidDate?.ToString("dd-MM-yyyy")</td>
                                                     <td class="text-nowrap">
                                                         <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,@data.EmployeeId)">Edit</a>
-
                                                     </td>
-
-
                                                 </tr>
                                                 paySl = paySl + 1;
                                             }
@@ -483,15 +462,10 @@
                                             <tr>
                                             </tr>
                                         }
-
                                     }
-
-
                                 </tbody>
                             </table>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -516,7 +490,6 @@
             });
 
             $('#paidTotal').keyup(function () {
-
                 getPaidAmount();
             })
 
@@ -565,7 +538,6 @@
             $('#txtTotalDue').text(dueAmount);
             $('#txtTotalPaid').text(paidAmount);
             getPaidAmount();
-
         }
 
         function getPaidAmount() {
@@ -575,9 +547,7 @@
                 swal.fire('warning', 'You Crossed The Maximum Pay Limit :' + parseInt($('#txtTotalDue').text()) + '', 'warning').then(function () {
                     $('#paidTotal').attr('readonly', false);
                     $('#paidTotal').val(parseInt($('#txtTotalDue').text()));
-
                 });
-
             }
         }
 
@@ -585,7 +555,6 @@
         $('#btnSave').click(function () {
 
             $('#frmData').on('submit', function (event) {
-
                 event.preventDefault();
                 var frmdata = $('#frmData').serialize();
                 console.log(frmdata);
@@ -629,7 +598,6 @@
 
 
         function Delete(Id) {
-
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You want to Delete this!",
@@ -658,8 +626,6 @@
 
             });
         }
-
-
     </script>
 }
 
