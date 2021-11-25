@@ -249,7 +249,6 @@
                                         <th>Total Paid</th>
                                         <th>Total Due</th>
                                         <th>Month</th>
-                                        <th>Year</th>
                                         <th>Process Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -280,60 +279,59 @@
                                                     <td>
                                                         @if (data?.EarningSalary?.month == 1)
                                                         {
-                                                            <span>January</span>
+                                                            <span>January</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 2)
                                                         {
-                                                            <span>February</span>
+                                                            <span>February</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 3)
                                                         {
-                                                            <span>March</span>
+                                                            <span>March</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 4)
                                                         {
-                                                            <span>April</span>
+                                                            <span>April</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 5)
                                                         {
-                                                            <span>May</span>
+                                                            <span>May</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 6)
                                                         {
-                                                            <span>Jun</span>
+                                                            <span>Jun</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 7)
                                                         {
-                                                            <span>July</span>
+                                                            <span>July</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 8)
                                                         {
-                                                            <span>Agust</span>
+                                                            <span>Agust</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 9)
                                                         {
-                                                            <span>September</span>
+                                                            <span>September</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 10)
                                                         {
-                                                            <span>October</span>
+                                                            <span>October</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 11)
                                                         {
-                                                            <span>November</span>
+                                                            <span>November</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 12)
                                                         {
 
 
-                                                            <span>December</span>
+                                                            <span>December</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else
                                                         {
                                                             <span>Unknown</span>
                                                         }
                                                     </td>
-                                                    <td>@data?.EarningSalary?.year</td>
                                                     <td>@data?.processDate?.ToString("dd-MM-yyyy")</td>
                                                     <td class="text-nowrap">
                                                         <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,@data.EmployeeId)">Edit</a>
@@ -390,7 +388,6 @@
                                         <th>Contact</th>
                                         <th>Net Payable</th>
                                         <th>Paid</th>
-                                        <th>Year</th>
                                         <th>Month</th>
                                         <th>Process Date</th>
                                         <th>Action</th>
@@ -416,57 +413,54 @@
                                                     <td>@data?.Employee.contactNo</td>
                                                     <td>@data?.EarningSalary.totalPayableSalary</td>
                                                     <td>@data?.paidAmount</td>
-                                                    <td>@data?.EarningSalary.year</td>
                                                     <td>
                                                         @if (data?.EarningSalary?.month == 1)
                                                         {
-                                                            <span>January</span>
+                                                            <span>January</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 2)
                                                         {
-                                                            <span>February</span>
+                                                            <span>February</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 3)
                                                         {
-                                                            <span>March</span>
+                                                            <span>March</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 4)
                                                         {
-                                                            <span>April</span>
+                                                            <span>April</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 5)
                                                         {
-                                                            <span>May</span>
+                                                            <span>May</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 6)
                                                         {
-                                                            <span>Jun</span>
+                                                            <span>Jun</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 7)
                                                         {
-                                                            <span>July</span>
+                                                            <span>July</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 8)
                                                         {
-                                                            <span>Agust</span>
+                                                            <span>Agust</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 9)
                                                         {
-                                                            <span>September</span>
+                                                            <span>September</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 10)
                                                         {
-                                                            <span>October</span>
+                                                            <span>October</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 11)
                                                         {
-                                                            <span>November</span>
+                                                            <span>November</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else if (data?.EarningSalary?.month == 12)
                                                         {
-
-
-                                                            <span>December</span>
+                                                            <span>December</span><span>-@data?.EarningSalary?.year</span>
                                                         }
                                                         else
                                                         {
