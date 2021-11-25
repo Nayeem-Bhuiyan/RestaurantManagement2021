@@ -93,7 +93,7 @@
                                 @if (Model.salaryStructures != null)
                                 {
                                     int Sl = 1;
-                                    @foreach (var data in Model.salaryStructures.OrderByDescending(x=>x.createdAt))
+                                    @foreach (var data in Model.salaryStructures?.OrderByDescending(x=>x.Id))
                                     {
                                         <tr class="text-center">
                                             <td>
@@ -109,7 +109,7 @@
                                             <td>@data?.activeFrom?.ToString("dd-MM-yyyy")</td>
                                             <td>@data?.activeTo?.ToString("dd-MM-yyyy")</td>
                                             <td class="text-nowrap">
-                                                <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,@data.EmployeeId,'@data.Employee.name',@data.basic,'@data.activeFrom','@data.activeTo')">Edit</a>
+                                                <a href="#" class="badge badge-warning badge-shadow" onclick="Edit(@data.Id,@data.EmployeeId,'@data?.Employee.name',@data?.basic,'@data?.activeFrom','@data?.activeTo')">Edit</a>
                                                 <a href="#" class="badge badge-danger badge-shadow" onclick="Delete(@data.Id)">Delete</a>
                                             </td>
 
