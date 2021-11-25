@@ -100,7 +100,6 @@
                             <th>Special</th>
                             <th>Net Payable</th>
                             <th>Month</th>
-                            <th>Year</th>
                             <th>Absent</th>
 
                         </tr>
@@ -119,7 +118,7 @@
                                     deduction = data?.SalaryStructure?.totalSalary - data?.totalPayableSalary;
                                     basicPay = data?.SalaryStructure?.totalSalary - deduction;
 
-                                    paidAmount = Model.salaryPayments.Where(x => x.EarningSalaryId == data.Id).FirstOrDefault()?.paidTotal;
+                                    paidAmount = Model.salaryPayments.Where(x => x.EarningSalaryId == data.Id).FirstOrDefault()?.paidTotal==null?0: Model.salaryPayments.Where(x => x.EarningSalaryId == data.Id).FirstOrDefault()?.paidTotal;
                                     if (paidAmount != data.totalPayableSalary)
                                     {
 
@@ -141,61 +140,60 @@
                                             <td>
                                                 @if (data?.month == 1)
                                                 {
-                                                    <span>January</span>
+                                                    <span>January</span><span>-@data?.year</span>
                                                 }
                                                 else if (data?.month == 2)
                                                 {
-                                                    <span>February</span>
+                                                    <span>February</span><span>-@data?.year</span>
                                                 }
                                                 else if (data?.month == 3)
                                                 {
-                                                    <span>March</span>
+                                                    <span>March</span><span>-@data?.year</span>
                                                 }
                                                 else if (data?.month == 4)
                                                 {
-                                                    <span>April</span>
+                                                    <span>April</span><span>-@data?.year</span>
                                                 }
                                                 else if (data?.month == 5)
                                                 {
-                                                    <span>May</span>
+                                                    <span>May</span><span>-@data?.year</span>
                                                 }
                                                 else if (data?.month == 6)
                                                 {
-                                                    <span>Jun</span>
+                                                    <span>Jun</span><span>-@data?.year</span>
                                                 }
                                                 else if (data?.month == 7)
                                                 {
-                                                    <span>July</span>
+                                                    <span>July</span><span>-@data?.year</span>
                                                 }
                                                 else if (data?.month == 8)
                                                 {
-                                                    <span>Agust</span>
+                                                    <span>Agust</span><span>-@data?.year</span>
                                                 }
                                                 else if (data?.month == 9)
                                                 {
-                                                    <span>September</span>
+                                                    <span>September</span><span>-@data?.year</span>
                                                 }
                                                 else if (data?.month == 10)
                                                 {
-                                                    <span>October</span>
+                                                    <span>October</span><span>-@data?.year</span>
                                                 }
                                                 else if (data?.month == 11)
                                                 {
-                                                    <span>November</span>
+                                                    <span>November</span><span>-@data?.year</span>
                                                 }
                                                 else if (data?.month == 12)
                                                 {
 
 
-                                                    <span>December</span>
+                                                    <span>December</span><span>-@data?.year</span>
                                                 }
                                                 else
                                                 {
                                                     <span>Unknown</span>
                                                 }
                                             </td>
-                                            <td>@data?.year</td>
-                                            <td>@data?.absentTotal</td>
+                                            <td>@data?.absentTotal hr</td>
 
                                         </tr>
                                         Sl = Sl + 1;
@@ -561,7 +559,7 @@
 
         function ProcessPayment(Id, EmployeeId, name, contactNo, totalSalary, totalPayableSalary, paidAmount) {
             CleanData();
-            var dueAmount = totalPayableSalary - paidAmount;
+            var dueAmount = totalPayableSalary - parseInt(paidAmount);
             $('#EarningSalaryId').val(Id);
             $('#EmployeeId').val(EmployeeId);
             $('#empName').text(name);
