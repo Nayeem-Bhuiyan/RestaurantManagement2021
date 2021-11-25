@@ -302,210 +302,208 @@
                                     <ul class="dropdown-menu">
                                         <li><a href="/Auth/Account/Login">Login</a></li>
                                         <li><a href="/Auth/Account/Register">Register</a></li>
-
                                     </ul>
                                 </li>
                             </ul>
                         }
                         else if (userInfos?.UserName != null && userRole == "Super Admin")
                         {
+                <ul class="sidebar-menu">
+                    <li class="menu-header">Main</li>
+                    <li class="dropdown active">
+                        <a href="#" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                            <i data-feather="user-check"></i><span>Auth</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/Auth/Account/Login">Login</a></li>
+                            <li><a href="/Auth/Account/Register">Register</a></li>
+                            <li><a href="#" data-target="#logoutModal" data-toggle="modal">Logout</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                            <i data-feather="copy"></i><span>
+                                Purchase
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="/PurchaseArea/Purchase/CreatePurchase">Create Purchase</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="grid"></i><span>Sell</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="/SellArea/SellRecord/CreateSell">Create Sell</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                            <i data-feather="pie-chart"></i><span>Kitchen</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="/KitchenArea/KitchenSupply/Index">Kitchen Supply</a></li>
+                            <li><a class="nav-link" href="#">test</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Food Item</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="/FoodItemArea/FoodItem/Index">Food Item</a></li>
+                            <li><a class="nav-link" href="/FoodItemArea/FoodCategory/Index">Food Category</a></li>
+                            <li><a class="nav-link" href="/FoodItemArea/FoodItem/CreateDailyFoodItem">Create Daily Food Item</a></li>
+                            <li><a class="nav-link" href="/FoodItemArea/DailyFoodItem/Index">Today Food Item</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                            <i data-feather="briefcase"></i><span>Salary</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="/SalaryArea/SalaryPayment/Payment">Salary Payment</a></li>
+                            <li><a class="nav-link" href="/SalaryArea/SalaryPayment/PaySalaryDetails">Paid Salary Status</a></li>
+                            <li><a class="nav-link" href="/SalaryArea/SalaryStructure/CreateMonthlySalary">Create Monthly Salary</a></li>
+                            <li><a class="nav-link" href="/SalaryArea/EarningSalary/Index"> All Earning Salary</a></li>
+                            <li><a class="nav-link" href="/SalaryArea/SalaryStructure/Index">Salary Structure</a></li>
+                            <li><a class="nav-link" href="/EmployeeArea/Employee/Index">Employee</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Master Data</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="/MasterDataArea/Category/Index">Category</a></li>
+                            <li><a class="nav-link" href="/MasterDataArea/Unit/Index">Unit</a></li>
+                            <li><a class="nav-link" href="/MasterDataArea/Item/Index">Item</a></li>
+                            <li><a class="nav-link" href="/MasterDataArea/Department/Index">Department</a></li>
+                            <li><a class="nav-link" href="/MasterDataArea/Designation/Index">Designation</a></li>
+                            <li><a class="nav-link" href="/MasterDataArea/Gender/Index">Gender</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                            <i data-feather="shopping-bag"></i><span>Supplier</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="/SupplierArea/Supplier/Index">Create Supplier</a></li>
+                            <li><a class="nav-link" href="/SupplierArea/SupplierDetails/Index">Supplier Details</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="mail"></i><span>Cash</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="/GeneralTransactionArea/AdminCashTransaction/Index">Admin Cash</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-header">UI Elements</li>
 
 
-                            <ul class="sidebar-menu">
-                                <li class="menu-header">Main</li>
-                                <li class="dropdown active">
-                                    <a href="#" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                                        <i data-feather="user-check"></i><span>Auth</span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="/Auth/Account/Login">Login</a></li>
-                                        <li><a href="/Auth/Account/Register">Register</a></li>
-                                        <li><a href="#" data-target="#logoutModal" data-toggle="modal">Logout</a></li>
-
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                                        <i data-feather="copy"></i><span>
-                                            Purchase
-                                        </span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/PurchaseArea/Purchase/CreatePurchase">Create Purchase</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="grid"></i><span>Sell</span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/SellArea/SellRecord/CreateSell">Create Sell</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                                        <i data-feather="pie-chart"></i><span>Kitchen</span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/KitchenArea/KitchenSupply/Index">Kitchen Supply</a></li>
-                                        <li><a class="nav-link" href="#">test</a></li>
-
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="layout"></i><span>Food Item</span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/FoodItemArea/FoodItem/Index">Food Item</a></li>
-                                        <li><a class="nav-link" href="/FoodItemArea/FoodCategory/Index">Food Category</a></li>
-                                        <li><a class="nav-link" href="/FoodItemArea/FoodItem/CreateDailyFoodItem">Create Daily Food Item</a></li>
-                                        <li><a class="nav-link" href="/FoodItemArea/DailyFoodItem/Index">Today Food Item</a></li>
-
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                                        <i data-feather="briefcase"></i><span>Salary</span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/SalaryArea/SalaryPayment/Payment">Salary Payment</a></li>
-                                        <li><a class="nav-link" href="/SalaryArea/SalaryPayment/PaySalaryDetails">Paid Salary Status</a></li>
-                                        <li><a class="nav-link" href="/SalaryArea/SalaryStructure/CreateMonthlySalary">Create Monthly Salary</a></li>
-                                        <li><a class="nav-link" href="/SalaryArea/EarningSalary/Index"> All Earning Salary</a></li>
-                                        <li><a class="nav-link" href="/SalaryArea/SalaryStructure/Index">Salary Structure</a></li>
-                                        <li><a class="nav-link" href="/EmployeeArea/Employee/Index">Employee</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Master Data</span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/MasterDataArea/Category/Index">Category</a></li>
-                                        <li><a class="nav-link" href="/MasterDataArea/Unit/Index">Unit</a></li>
-                                        <li><a class="nav-link" href="/MasterDataArea/Item/Index">Item</a></li>
-                                        <li><a class="nav-link" href="/MasterDataArea/Department/Index">Department</a></li>
-                                        <li><a class="nav-link" href="/MasterDataArea/Designation/Index">Designation</a></li>
-                                        <li><a class="nav-link" href="/MasterDataArea/Gender/Index">Gender</a></li>
-
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="mail"></i><span>Cash</span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/GeneralTransactionArea/AdminCashTransaction/Index">Admin Cash</a></li>
-                                    </ul>
-                                </li>
-                                <li class="menu-header">UI Elements</li>
-
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                                        <i data-feather="shopping-bag"></i><span>Supplier</span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/SupplierArea/Supplier/Index">Create Supplier</a></li>
-                                        <li><a class="nav-link" href="/SupplierArea/SupplierDetails/Index">Supplier Details</a></li>
-                                    </ul>
-                                </li>
-                                <li><a class="nav-link" href="#"><i data-feather="file"></i><span>Blank Page</span></a></li>
-                                <li class="menu-header">Otika</li>
+                    <li><a class="nav-link" href="#"><i data-feather="file"></i><span>Blank Page</span></a></li>
+                    <li class="menu-header">Otika</li>
 
 
 
 
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="feather"></i><span>Icons</span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="#">Font Awesome</a></li>
-                                        <li><a class="nav-link" href="#">Material Design</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="feather"></i><span>Icons</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="#">Font Awesome</a></li>
+                            <li><a class="nav-link" href="#">Material Design</a></li>
 
-                                    </ul>
-                                </li>
-                                <li class="menu-header">Media</li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="image"></i><span>Gallery</span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="#">Light Gallery</a></li>
-                                        <li><a href="#">Gallery 2</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="flag"></i><span>Sliders</span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Bootstrap Carousel.html</a></li>
-                                        <li><a class="nav-link" href="#">Owl Carousel</a></li>
-                                    </ul>
-                                </li>
-                                <li><a class="nav-link" href="timeline.html"><i data-feather="sliders"></i><span>Timeline</span></a></li>
-                                <li class="menu-header">Maps</li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                                        <i data-feather="map"></i><span>
-                                            Google
-                                            Maps
-                                        </span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Advanced Route</a></li>
-                                        <li><a href="#">Draggable Marker</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-header">Media</li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="image"></i><span>Gallery</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="#">Light Gallery</a></li>
+                            <li><a href="#">Gallery 2</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="flag"></i><span>Sliders</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Bootstrap Carousel.html</a></li>
+                            <li><a class="nav-link" href="#">Owl Carousel</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="nav-link" href="timeline.html"><i data-feather="sliders"></i><span>Timeline</span></a></li>
+                    <li class="menu-header">Maps</li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                            <i data-feather="map"></i><span>
+                                Google
+                                Maps
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Advanced Route</a></li>
+                            <li><a href="#">Draggable Marker</a></li>
 
-                                    </ul>
-                                </li>
+                        </ul>
+                    </li>
 
-                                <li>
-                                    <a class="nav-link" href="vector-map.html">
-                                        <i data-feather="map-pin"></i><span>
-                                            Vector
-                                            Map
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="menu-header">Pages</li>
+                    <li>
+                        <a class="nav-link" href="vector-map.html">
+                            <i data-feather="map-pin"></i><span>
+                                Vector
+                                Map
+                            </span>
+                        </a>
+                    </li>
+                    <li class="menu-header">Pages</li>
 
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                                        <i data-feather="alert-triangle"></i><span>Errors</span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="#">503</a></li>
-                                        <li><a class="nav-link" href="#">403</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                            <i data-feather="alert-triangle"></i><span>Errors</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="#">503</a></li>
+                            <li><a class="nav-link" href="#">403</a></li>
 
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                                        <i data-feather="anchor"></i><span>
-                                            Other
-                                            Pages
-                                        </span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="#">Create Post</a></li>
-                                        <li><a class="nav-link" href="#">Posts</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                            <i data-feather="anchor"></i><span>
+                                Other
+                                Pages
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="#">Create Post</a></li>
+                            <li><a class="nav-link" href="#">Posts</a></li>
 
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown">
-                                        <i data-feather="chevrons-down"></i><span>Multilevel</span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Menu 1</a></li>
-                                        <li class="dropdown">
-                                            <a href="#" class="has-dropdown">Menu 2</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="#">Child Menu 1</a></li>
-                                                <li class="dropdown">
-                                                    <a href="#" class="has-dropdown">Child Menu 2</a>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a href="#">Child Menu 1</a></li>
-                                                        <li><a href="#">Child Menu 2</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="#"> Child Menu 3</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                            <i data-feather="chevrons-down"></i><span>Multilevel</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Menu 1</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="has-dropdown">Menu 2</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Child Menu 1</a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="has-dropdown">Child Menu 2</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Child Menu 1</a></li>
+                                            <li><a href="#">Child Menu 2</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#"> Child Menu 3</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
 
                         }
 
