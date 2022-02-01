@@ -147,7 +147,7 @@ namespace RestaurantManagement
              });
 
 
-            services.AddControllersWithViews();
+
             services.AddRazorPages();
 
 
