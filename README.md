@@ -13,3 +13,5 @@ Use sql server 2019
 Full project completely done by using generic repository service.
 
 Bootstrap4 ,Ajax,Entity Framework Core are used here
+
+project Status:Incomplete
