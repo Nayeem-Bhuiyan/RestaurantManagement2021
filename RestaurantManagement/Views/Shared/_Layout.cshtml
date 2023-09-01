@@ -621,6 +621,27 @@
         </div>
     </div>
 
+
+
+
+    General JS Scripts
+    <script src="~/assets/js/app.min.js"></script>
+    <script src="~/assets/js/common.js"></script>
+    <!-- JS Libraies -->
+    <script src="~/assets/bundles/datatables/datatables.min.js"></script>
+    <script src="~/assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Template JS File -->
+    <script src="~/assets/js/scripts.js"></script>
+    <!-- Custom JS File -->
+    <script src="~/assets/js/custom.js"></script>
+    <!-- Other Libraies -->
+
+    <script src="~/assets/sweetalert2/dist/sweetalert2.js"></script>
+    <script src="~/assets/flatpikr/flatpickr.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -641,25 +662,6 @@
             </div>
         </div>
     </div>
-
-
-    General JS Scripts
-    <script src="~/assets/js/app.min.js"></script>
-    <script src="~/assets/js/common.js"></script>
-    <!-- JS Libraies -->
-    <script src="~/assets/bundles/datatables/datatables.min.js"></script>
-    <script src="~/assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Template JS File -->
-    <script src="~/assets/js/scripts.js"></script>
-    <!-- Custom JS File -->
-    <script src="~/assets/js/custom.js"></script>
-    <!-- Other Libraies -->
-
-    <script src="~/assets/sweetalert2/dist/sweetalert2.js"></script>
-    <script src="~/assets/flatpikr/flatpickr.js"></script>
-
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
 
